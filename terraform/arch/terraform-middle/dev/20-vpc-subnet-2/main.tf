@@ -51,6 +51,27 @@ module "aws_public_subnet_c" {
   tag_name = merge(local.tags, {Name = format("%s-subnet-public-c", local.name_prefix)})
 }
 
+
+# private subnet setting - [ availability_zone_a ] - web1
+module "aws_private_subnet_web_a" {
+  source     = "../../../../modules/aws/subnet"
+  cidr_block = "${var.vpc_cidr}.1.0/24"
+  vpc_id     = module.aws_vpc.vpc_id
+  is_public  = false
+  availability_zone = "${var.context.aws_region}a"
+  tag_name = merge(local.tags, {Name = format("%s-subnet-private-web-a", local.name_prefix)})
+}
+
+# private subnet setting - [ availability_zone_c ] - web2
+module "aws_private_subnet_web_c" {
+  source     = "../../../../modules/aws/subnet"
+  cidr_block = "${var.vpc_cidr}.2.0/24"
+  vpc_id     = module.aws_vpc.vpc_id
+  is_public  = false
+  availability_zone = "${var.context.aws_region}c"
+  tag_name = merge(local.tags, {Name = format("%s-subnet-private-web-c", local.name_prefix)})
+}
+
 # public route setting - [ internetgateway route table ]
 # resource : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table
 # data source : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route_table
@@ -76,6 +97,27 @@ resource "aws_route_table_association" "to-public-c" {
 }
 
 
+# private route setting
+resource "aws_route_table" "private-route" {
+  vpc_id = module.aws_vpc.vpc_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = module.aws_vpc_network.nat_gateway_id
+  }
+  tags = merge(local.tags, {Name = format("%s-private-route", local.name_prefix)})
+}
+
+resource "aws_route_table_association" "to-private-web-a" {
+  subnet_id      = module.aws_private_subnet_web_a.subnet_id
+  route_table_id = aws_route_table.private-route.id
+}
+
+resource "aws_route_table_association" "to-private-web-c" {
+  subnet_id      = module.aws_private_subnet_web_c.subnet_id
+  route_table_id = aws_route_table.private-route.id
+}
+
+
 # resource : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 # data source : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group
 module "aws_sg_default" {
@@ -86,8 +128,8 @@ module "aws_sg_default" {
 }
 
 # open port 22 - 80
-module "aws_sg_react_web" {
-  source = "../../../../modules/aws/security/react"
+module "aws_sg_web" {
+  source = "../../../../modules/aws/security/web"
   vpc_id = module.aws_vpc.vpc_id
   name =  format("%s-sg-22-3000", local.name_prefix)
   tag_name = merge(local.tags, {Name = format("%s-sg-web", local.name_prefix)})
@@ -101,34 +143,76 @@ module "aws_sg_was" {
   tag_name = merge(local.tags, {Name = format("%s-sg-was", local.name_prefix)})
 }
 
-# docker로 실행시키는 모듈 샘플코드
-module "aws_ec2_public_docker_springboot_ec2" {
- source        = "../../../../modules/aws/ec2/docker_ec2"
-  sg_groups     = [module.aws_sg_was.sg_id]
+
+module "aws_ec2_bastion" {
+  source        = "../../../../modules/aws/ec2/ec2_public"
+  sg_groups     = [module.aws_sg_default.sg_id]
   key_name      = module.aws_key_pair.key_name
   public_access = true
   subnet_id     = module.aws_public_subnet_a.subnet_id
-
-  docker_image = "symjaehyun/springhelloterra:1.0"   // specific docker image name
-  in_port      = "8080"    // specific port
-  out_port     = "8080"    // specific port
-  key_path     = "./${module.aws_key_pair.key_name}.pem"
-  tag_name     = merge(local.tags, {Name = format("%s-ec2-was", local.name_prefix)})
- } 
-
-
-# docker로 실행시키는 모듈 샘플코드 react
-module "aws_ec2_public_docker_react_ec2" {
-  source        = "../../../../modules/aws/ec2/docker_ec2"
-  name          = "auto_generated_public_ec2"
-  sg_groups     = [module.aws_sg_react_web.sg_id]
-  key_name      = module.aws_key_pair.key_name
-  public_access = true
-  subnet_id     = module.aws_public_subnet_a.subnet_id
-
-  docker_image = "symjaehyun/react-sample:latest"   // specific docker image name
-  in_port      = "3000"    // specific port
-  out_port     = "3000"    // specific port
-  key_path     = "./${module.aws_key_pair.key_name}.pem"
-  tag_name     = merge(local.tags, {Name = format("%s-ec2-react", local.name_prefix)})
+  tag_name = merge(local.tags, {Name = format("%s-ec2-public-bastion-a", local.name_prefix)})
 }
+
+module "private-web-a" {
+  source        = "../../../../modules/aws/ec2/ec2_private"
+  sg_groups     = [module.aws_sg_web.sg_id]
+  key_name      = module.aws_key_pair.key_name
+  subnet_id     = module.aws_private_subnet_web_a.subnet_id
+  tag_name = merge(local.tags, {Name = format("%s-ec2-private-web-a", local.name_prefix)})
+}
+
+module "private-web-c" {
+  source        = "../../../../modules/aws/ec2/ec2_private"
+  sg_groups     = [module.aws_sg_web.sg_id]
+  key_name      = module.aws_key_pair.key_name
+  subnet_id     = module.aws_private_subnet_web_c.subnet_id
+  tag_name = merge(local.tags, {Name = format("%s-ec2-private-web-c", local.name_prefix)})
+}
+
+## alb area 
+# ALB
+module "aws-lb-web-alb" {
+    source             = "../../../../modules/aws/loadbalancer"
+    lb_name = format("%s-web-alb", local.name_prefix)
+    lb_internal           = false
+    lb_type = "application"
+    security_groups    = [module.aws_sg_web.sg_id]
+    subnets            = [module.aws_private_subnet_web_a.subnet_id, module.aws_private_subnet_web_c.subnet_id]
+    tag_name = merge(local.tags, {Name = format("%s-web-alb", local.name_prefix)})
+    
+    #target group setting
+    lb_target_group_name = format("%s-web-alb-tg", local.name_prefix)
+    vpc_id = module.aws_vpc.vpc_id
+    lb_protocol = "HTTP"
+    tg_tag_name = merge(local.tags, {Name = format("%s-web-tg", local.name_prefix)})
+
+    #lb_attachment setting - ec2 연결 
+    nlb_listeners_ids = [ module.private-web-a.ec2_id , module.private-web-c.ec2_id ]
+    target_port = 80
+}
+
+
+
+resource "aws_lb_target_group_attachment" "web-alb-tg-att-web1" {
+    target_group_arn = module.aws-lb-web-alb.lb-tg-arn
+    target_id = module.private-web-a.ec2_id
+    port = 80
+}
+
+resource "aws_lb_target_group_attachment" "web-alb-tg-att-web2" {
+    target_group_arn = module.aws-lb-web-alb.lb-tg-arn
+    target_id = module.private-web-c.ec2_id
+    port = 80
+}
+
+
+
+#module "private-was-a" {
+#  source        = "../../../modules/aws/ec2/ec2_private"
+#  sg_groups     = [module.aws_sg_was.sg_id]
+#  key_name      = module.aws_key_pair.key_name
+#  subnet_id     = module.aws_private_subnet_was_a.subnet_id
+#  tag_name = merge(local.tags, {Name = format("%s-ec2-private-was-a", local.name_prefix)})
+#}
+
+

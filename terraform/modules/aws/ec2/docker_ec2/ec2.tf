@@ -1,5 +1,5 @@
 resource "aws_instance" "instance-template" {
-  ami                    = "ami-01d87646ef267ccd7"
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   vpc_security_group_ids = var.sg_groups
   subnet_id              = var.subnet_id
@@ -8,7 +8,7 @@ resource "aws_instance" "instance-template" {
   associate_public_ip_address = var.public_access
 
   provisioner "file" {
-    source      = "/infra/terraform/scripts/deploy_with_docker.sh"
+    source      = "${path.module}/deploy_with_docker.sh"
     destination = "/tmp/script.sh"
   }
 

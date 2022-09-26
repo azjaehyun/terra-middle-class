@@ -40,3 +40,9 @@ variable "docker_image" {
 variable "key_path" {
   type = string
 }
+
+variable "tag_name" {
+  description = "A mapping of tags to assign to the resource"
+  type        = map(string)
+  default     = {}
+}
