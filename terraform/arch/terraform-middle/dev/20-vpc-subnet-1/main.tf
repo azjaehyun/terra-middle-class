@@ -85,7 +85,7 @@ module "aws_sg_default" {
   tag_name = merge(local.tags, {Name = format("%s-sg-default", local.name_prefix)})
 }
 
-# open port 22 - 80
+# open port 22 - 3000
 module "aws_sg_react_web" {
   source = "../../../../modules/aws/security/react"
   vpc_id = module.aws_vpc.vpc_id
