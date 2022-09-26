@@ -246,7 +246,7 @@ resource "aws_lb_target_group_attachment" "web-alb-tg-att-web2" {
 # data source : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/launch_configuration
 resource "aws_launch_configuration" "awsome-ap2-web-conf" {
     name_prefix     = "awsome-ap2-web-"
-    image_id        = "ami-0e7d2dd1aca45ce5c"
+    image_id        = "${data.aws_ami.ubuntu_ami.id}"
     instance_type   = "t2.micro"
     user_data       = <<EOF
 #!/bin/bash
@@ -270,6 +270,8 @@ resource "aws_autoscaling_group" "awsome-ap2-web-as" {
     desired_capacity     = 2
     launch_configuration = aws_launch_configuration.awsome-ap2-web-conf.name
     vpc_zone_identifier  = [module.aws_public_subnet_a.subnet_id, module.aws_public_subnet_c.subnet_id]
+    #load_balancers = ["${aws_elb.wordpress.id}"]
 }
+
 
 

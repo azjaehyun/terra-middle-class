@@ -1,8 +1,12 @@
-# 참고 사이트
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet#availability_zone
-- https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/examples/vpc-separate-private-route-tables/main.tf
 
-# terraform 실행방법
+## terraform 중급반 
+### 목표
+* 테라폼 파일 구조 & 테라폼 기본 문법 알기
+* module template 생성
+* infra architecture 코드 제작 
+* route53 , domain ssl , s3
+* eks 설치 
+* aws ALB 생성 , Ingress ssl 연동 , k8s service & pod 생성
 ```
 terraform init
 terraform plan
