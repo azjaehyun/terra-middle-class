@@ -124,7 +124,7 @@ module "aws_ec2_public_docker_react_ec2" {
   sg_groups     = [module.aws_sg_react_web.sg_id]
   key_name      = module.aws_key_pair.key_name
   public_access = true
-  subnet_id     = module.aws_public_subnet_a.subnet_id
+  subnet_id     = module.aws_public_subnet_c.subnet_id
 
   docker_image = "symjaehyun/react-sample:latest"   // specific docker image name
   in_port      = "3000"    // specific port
