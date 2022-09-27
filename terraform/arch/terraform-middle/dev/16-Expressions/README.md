@@ -1,8 +1,20 @@
 ### https://www.terraform.io/cli/commands/console
 
-## if문
+## if문 String
 ```
  ${var.ifvalue == "" ? "dog" : "cat"}
+```
+
+## if문 bool
+```
+> var.ifbooltrue ? 1 : 0
+1
+> var.ifboolfalse ? 1 : 0
+0
+> (var.stringVal == "stringVal") ? 1 : 0
+1
+> (var.stringVal == "stringVal2") ? 1 : 0
+0
 ```
 ## for 문
 ``` 

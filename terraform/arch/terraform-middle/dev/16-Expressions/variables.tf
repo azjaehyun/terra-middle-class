@@ -19,6 +19,19 @@ variable "context" {
 
 variable "ifvalue" {
   description = "If set to true, use the sin's User Data script"
+  type = string
+  default = ""
+}
+variable "ifbooltrue" {
+  description = "If set to true, use the sin's User Data script"
+  type = bool
+  default = true
+}
+
+variable "ifboolfalse" {
+  description = "If set to true, use the sin's User Data script"
+  type = bool
+  default = false
 }
 
 variable "user_names" {
