@@ -4,3 +4,8 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+## ec2 web 2개 bastion 1개
+```
+
+```
