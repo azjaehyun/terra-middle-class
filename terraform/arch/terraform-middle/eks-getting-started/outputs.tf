@@ -46,7 +46,7 @@ users:
       args:
         - "token"
         - "-i"
-        - "${var.cluster-name}"
+        - "${local.cluster_name}"
 KUBECONFIG
 }
 
