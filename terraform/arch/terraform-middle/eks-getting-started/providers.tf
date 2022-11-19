@@ -1,15 +1,8 @@
-terraform {
-  required_version = ">= 0.12"
+# my aws key setting 
+## doc : https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+provider "aws" { 
+  region      = var.context.aws_region
+  profile     = var.context.aws_profile
+  # shared_config_files      = ["/Users/tf_user/.aws/conf"]
+  shared_credentials_files = [var.context.aws_credentials_file]
 }
-
-provider "aws" {
-  region = var.aws_region
-}
-
-data "aws_availability_zones" "available" {}
-
-# Not required: currently used in conjunction with using
-# icanhazip.com to determine local workstation external IP
-# to open EC2 Security Group access to the Kubernetes cluster.
-# See workstation-external-ip.tf for additional information.
-provider "http" {}
