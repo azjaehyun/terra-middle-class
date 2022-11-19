@@ -1,0 +1,24 @@
+---
+- name: Download amazon-ssm-agent
+  become: true
+  get_url:
+    url: "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_{{ url }}/amazon-ssm-agent.deb"
+    dest: /tmp/amazon-ssm-agent.deb
+    force_basic_auth: yes
+
+- name: Remove old ssm-agent
+  snap:
+    name: amazon-ssm-agent
+    state: absent
+
+- name: Installing ssm agent
+  apt:
+    deb: /tmp/amazon-ssm-agent.deb
+
+- name: Register to service
+  become: yes
+  become_user: root
+  service:
+    name: amazon-ssm-agent
+    enabled: yes
+    state: started

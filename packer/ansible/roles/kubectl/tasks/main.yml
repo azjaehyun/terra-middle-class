@@ -1,0 +1,14 @@
+---
+- name: include os-specific vars
+  include_vars: "{{ os_name }}.yml"
+
+- name: prepare install task for kubectl
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/tmp/kubectl.sha256"
+    - "/usr/bin/kubectl"
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

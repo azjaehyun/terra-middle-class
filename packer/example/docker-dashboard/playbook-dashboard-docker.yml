@@ -1,0 +1,14 @@
+---
+- name: Building dashboard docker images
+  hosts: all
+  become: true
+  vars_files:
+    - "group_vars/defaults.yml"
+  roles:
+    - role: docker-dashboard
+      harbor:
+        domain: harbor.devapp.shop
+        username: admin
+        password: admin
+        project: kubernetesui
+        upload: false

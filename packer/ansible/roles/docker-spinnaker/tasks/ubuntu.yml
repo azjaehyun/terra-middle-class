@@ -1,0 +1,42 @@
+---
+- name: spinnaker docker images pull
+  shell: |
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/echo:{{ echo_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/clouddriver:{{ clouddriver_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/deck:{{ deck_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/front50:{{ front50_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/gate:{{ gate_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/igor:{{ igor_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/orca:{{ orca_version }}
+    docker pull us-docker.pkg.dev/spinnaker-community/docker/rosco:{{ rosco_version }}
+
+- name: tagging docker images
+  shell: |
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/echo:{{ echo_version }} {{ harbor.domain }}/{{harbor.project}}/echo:{{ echo_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/clouddriver:{{ clouddriver_version }} {{ harbor.domain }}/{{harbor.project}}/clouddriver:{{ clouddriver_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/deck:{{ deck_version }} {{ harbor.domain }}/{{harbor.project}}/deck:{{ deck_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/front50:{{ front50_version }} {{ harbor.domain }}/{{harbor.project}}/front50:{{ front50_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/gate:{{ gate_version }} {{ harbor.domain }}/{{harbor.project}}/gate:{{ gate_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/igor:{{ igor_version }} {{ harbor.domain }}/{{harbor.project}}/igor:{{ igor_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/orca:{{ orca_version }} {{ harbor.domain }}/{{harbor.project}}/orca:{{ orca_version }}
+    docker tag us-docker.pkg.dev/spinnaker-community/docker/rosco:{{ rosco_version }} {{ harbor.domain }}/{{harbor.project}}/rosco:{{ rosco_version }}
+
+- name: push docker images
+  shell: |
+    chdir /tmp/dockerfile
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push {{ harbor.domain }}/{{harbor.project}}/echo:{{ echo.versio }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/clouddriver:{{ clouddriver_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/deck:{{ deck_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/front50:{{ front50_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/gate:{{ gate_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/igor:{{ igor_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/orca:{{ orca_version }}
+    docker push {{ harbor.domain }}/{{harbor.project}}/rosco:{{ rosco_version }}
+  when: harbor.upload == true or harbor.upload == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true

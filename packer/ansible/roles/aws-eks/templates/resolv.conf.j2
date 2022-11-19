@@ -1,0 +1,13 @@
+nameserver 172.31.0.2
+search {{ aws_region | default('ap-northeast-2') }}.compute.internal
+
+# Google IPv4 nameservers
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+
+# Korea(KT) nameservers
+nameserver 168.126.63.1
+nameserver 168.126.63.2
+
+# SK nameservers
+nameserver 210.220.163.82

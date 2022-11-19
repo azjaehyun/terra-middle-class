@@ -1,0 +1,7 @@
+---
+# defaults file for java
+java_packages:
+  - openjdk-11-jdk
+  - openjdk-8-jdk # whatap only
+
+default_jdk: "openjdk-11-jdk"

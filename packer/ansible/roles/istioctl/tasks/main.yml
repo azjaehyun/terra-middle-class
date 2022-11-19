@@ -1,0 +1,15 @@
+---
+- name: include os-specific vars
+  include_vars: "{{ os_name }}.yml"
+
+- name: prepare install task for istioctl.
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+      - "/usr/bin/istioctl"
+      - "/opt/istio-{{ istio_version }}"
+
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

@@ -1,0 +1,20 @@
+---
+# configuration iptables firewall rules
+- name: configure iptables restore
+  shell: |
+    bash -c "/sbin/iptables-save > /etc/sysconfig/iptables"
+
+# it will be activated service link '/etc/systemd/system/multi-user.target.wants/iptables-restore.service'
+- name: install iptables service systemd unit file.
+  template:
+    src: 'iptables-restore.service.j2'
+    dest: '/etc/systemd/system/iptables-restore.service'
+    mode: 0644
+    owner: root
+    group: root
+
+- name: enabled iptables-restore service.
+  service:
+    name: iptables-restore
+    state: started
+    enabled: true

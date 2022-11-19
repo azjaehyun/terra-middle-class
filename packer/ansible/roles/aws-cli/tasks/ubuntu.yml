@@ -1,0 +1,20 @@
+---
+- name: download aws cli installer
+  become: no
+  get_url:
+    url: "{{ cli_download_url }}"
+    dest: /tmp/awscliv2.zip
+    force_basic_auth: yes
+
+- name: unzip awscli installer
+  become: no
+  unarchive:
+    remote_src: yes
+    src: /tmp/awscliv2.zip
+    dest: /tmp
+    mode: 0755
+
+- name: run awscli installer
+  become: true
+  command: /tmp/aws/install --update
+

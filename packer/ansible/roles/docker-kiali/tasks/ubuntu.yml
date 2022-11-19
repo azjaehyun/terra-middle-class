@@ -1,0 +1,21 @@
+---
+- name: kiali docker image pull
+  shell: |
+    docker pull quay.io/kiali/kiali:v1.34.1
+
+- name: kiali docker image tag
+  shell: |
+    docker tag quay.io/kiali/kiali:v1.34.1 {{ harbor.domain }}/{{harbor.project}}/kiali:v1.34.1
+
+- name: kiali docker image push
+  shell: |
+    chdir /tmp/dockerfile
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push {{ harbor.domain }}/{{harbor.project}}/kiali:v1.34.1
+  when: harbor.upload == true or harbor.upload == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true

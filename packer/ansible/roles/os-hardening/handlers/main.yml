@@ -1,0 +1,10 @@
+---
+- name: 'restart chrony on ubuntu'
+  service:
+    name: "chrony"
+    state: 'restarted'
+
+- name: 'reload sysstat on ubuntu'
+  service:
+    name: "sysstat"
+    state: 'restarted'

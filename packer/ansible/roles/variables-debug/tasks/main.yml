@@ -1,0 +1,90 @@
+---
+#- name: init variables
+#  include_tasks: prerequisites_{{ ansible_os_family | lower }}.yml
+
+- name: Print Facts Variables
+  vars:
+    msg: |
+      inventory_hostname: {{ inventory_hostname }}
+      ansible_system_vendor: {{ ansible_system_vendor }}
+      ansible_product_name: {{ ansible_product_name }}
+      ansible_hostname: {{ ansible_hostname }}
+      ansible_system: {{ ansible_system }}
+      ansible_user_id: {{ ansible_user_id }}
+      ansible_user_shell: {{ ansible_user_shell }}
+      ansible_user_uid: {{ ansible_user_uid }}
+      ansible_user_dir: {{ ansible_user_dir }}
+      ansible_kernel: {{ ansible_kernel }}
+      ansible_kernel_version: {{ ansible_kernel_version }}
+      ansible_distribution: {{ ansible_distribution }}
+      ansible_distribution_version: {{ ansible_distribution_version }}
+      ansible_distribution_major_version: {{ ansible_distribution_major_version }}
+      ansible_distribution_release: {{ ansible_distribution_release }}
+      ansible_distribution_file_path: {{ ansible_distribution_file_path }}
+      ansible_os_family: {{ ansible_os_family }}
+      ansible_pkg_mgr: {{ ansible_pkg_mgr }}
+      ansible_memtotal_mb: {{ ansible_memtotal_mb }}
+      ansible_processor_cores: {{ ansible_processor_cores }}
+      ansible_mounts: {{ ansible_mounts[0]["size_total"] }}
+  debug:
+    msg: "{{ msg.split('\n') }}"
+  tags: log.info
+
+- name: Print Variables
+  vars:
+    msg: |
+      aws_region: {{ aws_region | default('none') }}
+      osname : {{ os_name | default('none') }}
+      local_os_name: {{ local_os_name }}
+      local_module_name: {{ local_module_name }}
+  debug:
+    msg: "{{ msg.split('\n') }}"
+  tags: log.info
+
+- name: "init dynamic variables"
+  shell: |
+    TOTAL_MEM=$(free -m | awk 'NR==2{printf "%s", $2}')
+    USED_MEM=$(free -m | awk 'NR==2{printf "%s", $3}')
+    FREE_MEM=$((TOTAL_MEM - USED_MEM))
+    PERC_MEN=$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2}')
+    echo '{"total":"'${TOTAL_MEM}'","used":"'${USED_MEM}'","free":"'${FREE_MEM}'","percent":"'${PERC_MEN}'"}'
+  register: dynamic_vars
+  ignore_errors: true
+  no_log: true
+
+- name: set dynamic variables.
+  set_fact:
+    result: "{{ dynamic_vars.stdout | from_json }}"
+
+- name: check dynamic variables.
+  vars:
+    values: |
+      free:    {{ result.free }}
+      percent: {{ result.percent }}
+      total:   {{ result.total }}
+      used:    {{ result.used }}
+  debug:
+    msg: "{{ values.split('\n') }}"
+
+- name: 'check if OS vars file exists'
+  become: false
+  stat:
+    path: "{{ role_path }}/vars/{{ os_name }}.yml"
+  register: 'role_vars_file'
+  delegate_to: '127.0.0.1'
+
+- name: include os-specific vars.
+  include_vars: "{{ os_name }}.yml"
+  when: "role_vars_file.stat.exists"
+
+- include_tasks: "example-vars-collection.yml"
+  tags: example collection variables
+  when: exam_collections|bool
+
+
+
+
+
+
+
+

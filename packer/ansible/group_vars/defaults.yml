@@ -1,0 +1,8 @@
+---
+##@ref https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#variables-and-vaults
+aws_region: ap-northeast-2
+
+os_name: "{{ 'ubuntu' if ansible_distribution == 'Ubuntu'
+          else 'centos' if ansible_distribution == 'CentOS'
+          else 'amazon' if ansible_distribution == 'Amazon'
+          else 'Unkown' }}"

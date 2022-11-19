@@ -1,0 +1,14 @@
+---
+# configure the nameserver
+- name: configuration the nameserver file.
+  template:
+    src: 'resolv.conf.j2'
+    dest: '/run/systemd/resolve/resolv.conf'
+    mode: 0644
+    owner: root
+    group: root
+
+- name: create symbolic link for nameserver resolving.
+  shell: |
+    rm -f /etc/resolv.conf
+    ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf

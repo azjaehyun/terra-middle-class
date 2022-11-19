@@ -1,0 +1,26 @@
+---
+- name: download terraform the terraform.
+  get_url:
+    url: "{{ terraform_download_url }}"
+    dest: "/tmp/terraform-{{ terraform_version }}.zip"
+    force_basic_auth: yes
+
+- name: create terraform directory.
+  file:
+    path: '/opt/terraform/bin'
+    state: directory
+
+- name: extract terraform archive file.
+  unarchive:
+    remote_src: yes
+    src: "/tmp/terraform-{{ terraform_version }}.zip"
+    dest: '/opt/terraform/bin'
+    mode: 0755
+
+- name: create symbolic link for terraform.
+  shell: |
+    ln -s /opt/terraform/bin/terraform /usr/bin/terraform
+    ln -s /opt/terraform/bin/terraform /usr/bin/tf
+
+- name: delete terraform archive.
+  shell: rm -f /tmp/terraform*.zip

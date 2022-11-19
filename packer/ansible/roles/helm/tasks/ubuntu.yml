@@ -1,0 +1,30 @@
+---
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+    state: present
+
+- name: install apt-transport-https # need for helm
+  apt:
+    pkg: apt-transport-https
+    state: latest
+
+- name: add helm-stable-repository
+  shell: echo "deb https://baltocdn.com/helm/stable/debian/ all main" |  tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+- name: apt-get update
+  apt: name=helm state=latest update_cache=yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+

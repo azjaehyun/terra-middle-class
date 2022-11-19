@@ -1,0 +1,27 @@
+---
+- name: create host storage and postgresql jdbc download
+  shell: |
+    mkdir -p /data/logstash
+    wget https://jdbc.postgresql.org/download/postgresql-42.2.22.jar --directory-prefix=/data/logstash
+    chown 1000:1000 /data/logstash/postgresql-42.2.22.jar
+
+- name: logstash docker images pull
+  shell: |
+    docker pull docker.elastic.co/logstash/logstash:{{ image.tag }}
+
+- name: tagging docker images
+  shell: |
+    docker tag docker.elastic.co/logstash/logstash:{{ image.tag }} {{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}
+
+- name: push docker images
+  shell: |
+    chdir /tmp/dockerfile
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push {{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}
+  when: harbor.upload == true or harbor.upload == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true

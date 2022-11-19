@@ -1,0 +1,114 @@
+{
+  "variables": {
+    "aws_profile": "{{env `AWS_PROFILE`}}",
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_owner": "{{env `AWS_OWNER`}}",
+    "aws_instance_type": "t3.small",
+    "aws_ami_name": "eks-node",
+    "ami_description": "Ubuntu Server 18.04 LTS (HVM) EKS Golden AMI",
+    "os_name": "ubuntu-18.04",
+    "version": "{{isotime `20060102-1504`}}",
+    "ssh_username": "ubuntu",
+    "eks_version": "",
+    "eks_build_date": "",
+    "cni_plugin_version": "v0.8.6",
+    "binary_bucket_name": "amazon-eks",
+    "binary_bucket_region": "{{env `AWS_REGION`}}",
+    "hardening_flag": "false",
+    "root_volume_size": "10",
+    "data_volume_size": "50",
+    "vpc_id":"",
+    "subnet_id":"",
+    "http_proxy": "",
+    "https_proxy": "",
+    "no_proxy": ""
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "profile": "{{user `aws_profile`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "architecture": "x86_64",
+          "name": "gold-ubuntu-18.04*",
+          "block-device-mapping.volume-type": "gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": [
+          "{{user `aws_owner`}}"
+        ],
+        "most_recent": true
+      },
+      "ami_name": "{{user `aws_ami_name`}}-{{user `os_name`}}-{{user `version`}}-ami",
+      "instance_type": "{{user `aws_instance_type`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_pty":true,
+      "launch_block_device_mappings":[
+        {
+          "device_name":"/dev/sda1",
+          "volume_size": "{{user `root_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        },
+        {
+          "device_name":"/dev/sdb",
+          "volume_size":"{{user `data_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        }
+      ],
+      "ami_block_device_mappings":[
+        {
+          "device_name":"/dev/sdb",
+          "volume_size":"{{user `data_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        }
+      ],
+      "tags": {
+        "Name": "{{user `aws_ami_name`}}-{{user `os_name`}}-{{user `version`}}-ami",
+        "Version": "{{user `version`}}",
+        "OS_FAMILY": "Debian",
+        "OS_VERSION": "18.04 LTS",
+        "Builder": "packer"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "echo 'Waiting for OS Boot-up ' && while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo -n ' .'; sleep 2; done"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./ansible/playbook-aws-eks.yml",
+      "ansible_env_vars": [
+        "ANSIBLE_HOST_KEY_CHECKING=False",
+        "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s'",
+        "HTTP_PROXY={{user `http_proxy`}}",
+        "HTTPS_PROXY={{user `https_proxy`}}",
+        "NO_PROXY={{user `no_proxy`}}",
+        "KUBERNETES_VERSION={{user `eks_version`}}",
+        "KUBERNETES_BUILD_DATE={{user `eks_build_date`}}",
+        "BINARY_BUCKET_NAME={{user `binary_bucket_name`}}",
+        "BINARY_BUCKET_REGION={{user `binary_bucket_region`}}",
+        "CNI_PLUGIN_VERSION={{user `cni_plugin_version`}}",
+        "HARDENING_FLAG={{user `hardening_flag`}}"
+      ],
+      "extra_arguments": [
+        "--extra-vars", "eks_version={{user `eks_version`}}",
+        "--extra-vars", "eks_build_date={{user `eks_build_date`}}",
+        "--extra-vars", "cni_plugin_version={{user `cni_plugin_version`}}"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json",
+      "strip_path": true
+    }
+  ]
+}

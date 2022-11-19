@@ -1,0 +1,22 @@
+---
+- name: 'install sysstat'
+  apt:
+    name: sysstat
+    install_recommends: no
+    state: latest
+    update_cache: yes
+
+- name: 'register sysstat service'
+  service:
+    name: 'chrony'
+    enabled: 'yes'
+    state: 'started'
+
+- name: 'configure sysstat'
+  template:
+    src: 'ubuntu.sysstat.j2'
+    dest: '/etc/default/sysstat'
+    backup: no
+    mode: "0644"
+  notify:
+    - 'reload sysstat on ubuntu'

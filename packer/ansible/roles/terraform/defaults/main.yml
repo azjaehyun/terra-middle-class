@@ -1,0 +1,5 @@
+---
+# defaults variable for packer
+terraform_version: "0.14.0"
+# terraform release url - https://releases.hashicorp.com/terraform/
+terraform_download_url: ""

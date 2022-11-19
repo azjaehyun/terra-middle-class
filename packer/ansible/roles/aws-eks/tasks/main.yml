@@ -1,0 +1,19 @@
+---
+- name: include os-specific vars.
+  include_vars: "{{ os_name }}.yml"
+
+- name: include os specific task.
+  include_tasks: "{{ os_name }}.yml"
+
+- name: clean-up temporary directories
+  shell: |
+    apt-get -y clean
+    rm -rf \
+      /var-old \
+      /var/log-old \
+      /var/log/audit-old \
+      /home-old \
+      /etc/packer \
+      /var/lib/docker-old
+    touch /etc/machine-id
+  ignore_errors: true

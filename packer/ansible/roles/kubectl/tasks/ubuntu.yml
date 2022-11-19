@@ -1,0 +1,25 @@
+---
+# download and install the module kubectl
+- name: download kubectl checksum file.
+  get_url:
+    url: "{{ kubectl_download }}.sha256"
+    dest: "/tmp/kubectl.sha256"
+    force_basic_auth: yes
+
+- name: set kubectl checksum variable.
+  shell: "cat /tmp/kubectl.sha256 | head -n1 | cut -d ' ' -f1"
+  register: kubectl_checksum_file
+
+- name: check exists kubectl file
+  stat:
+    path: '/usr/bin/kubectl'
+  register: kubectl_file
+
+- name: download kubectl shell file.
+  get_url:
+    url: "{{ kubectl_download }}"
+    dest: '/usr/bin/kubectl'
+    checksum: "sha256:{{ kubectl_checksum_file.stdout }}"
+    mode: 0555
+    force_basic_auth: yes
+  when: not kubectl_file.stat.exists

@@ -1,0 +1,15 @@
+---
+- name: systemd daemon-reload
+  systemd:
+    daemon_reload: true
+  listen: 'systemctl daemon-reload'
+
+- name: restart docker service.
+  service:
+    name: "docker"
+    state: 'restarted'
+  listen: 'systemctl daemon-reload'
+
+- name: 'daemon-reload for docker rules'
+  systemd:
+    daemon_reload: true

@@ -1,0 +1,2 @@
+---
+s3_kubectl_download: "https://amazon-eks.s3.us-west-2.amazonaws.com/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/kubectl"

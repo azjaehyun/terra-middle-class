@@ -1,0 +1,15 @@
+FROM sonarqube:{{ sonarqube_version }}
+
+USER root
+
+ENV SONARQUBE_HOME /opt/sonarqube
+ENV PLUGIN_VERSION {{ plugin_version }}
+
+COPY --chown=sonarqube:sonarqube sonar-auth-oidc-plugin-${PLUGIN_VERSION}.jar ${SONARQUBE_HOME}/extensions/plugins/
+
+USER sonarqube
+
+WORKDIR ${SONARQUBE_HOME}
+EXPOSE 9000
+ENTRYPOINT ["bin/run.sh"]
+CMD ["bin/sonar.sh"]

@@ -1,0 +1,23 @@
+---
+- name: Building Kubernetes grafana Worker Node AMI
+  hosts: all
+  become: true
+  vars_files:
+    - "group_vars/defaults.yml"
+  roles:
+    - role: aws-cli
+    - role: sudo
+    - role: lsof
+    - role: htop
+    - role: aws-eks
+    - role: docker-grafana
+      image:
+        name: grafana
+        tag: 8.0.3
+      harbor:
+        domain: harbor.devapp.shop
+        username: admin
+        password: admin
+        project: tools
+        upload: false
+    - role: cleansing

@@ -1,0 +1,13 @@
+---
+- name: include os-specific vars
+  include_vars: "{{ os_name }}.yml"
+
+- name: prepare install task for terraform.
+  shell: |
+    rm -f /usr/bin/terraform
+    rm -f /usr/bin/tf
+    rm -f /opt/terraform/bin/terraform
+    rm -f /tmp/terraform*.zip
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

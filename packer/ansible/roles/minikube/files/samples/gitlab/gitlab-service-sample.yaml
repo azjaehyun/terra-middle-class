@@ -1,0 +1,55 @@
+---
+# ClusterIP type
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-service
+  namespace: default
+  labels:
+    app: gitlab
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: gitlab
+
+---
+# LoadBalancer type
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-service-lb
+  namespace: default
+  labels:
+    app: gitlab
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: gitlab
+
+---
+# NodePort type
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-service
+  namespace: default
+  labels:
+    app: gitlab
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30080
+      protocol: TCP
+  selector:
+    app: gitlab

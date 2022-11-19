@@ -1,0 +1,14 @@
+---
+
+# defaults for useradd
+os_useradd_mail_dir: /var/spool/mail
+os_useradd_create_home: true
+
+os_env_umask: '077'
+
+os_auth_uid_min: 1000
+os_auth_gid_min: 1000
+os_auth_sys_uid_min: 201
+os_auth_sys_uid_max: 999
+os_auth_sys_gid_min: 201
+os_auth_sys_gid_max: 999

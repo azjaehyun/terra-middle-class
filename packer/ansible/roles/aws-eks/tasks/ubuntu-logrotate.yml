@@ -1,0 +1,26 @@
+---
+# configuration log rotate
+- name: create journal directory if not exists.
+  file:
+    path: "/var/log/journal"
+    state: "directory"
+    owner: "root"
+    group: "systemd-journal"
+
+- name: configure logrotate for kube-proxy.
+  template:
+    src: 'logrotate-kube-proxy.j2'
+    dest: '/etc/logrotate.d/kube-proxy'
+    mode: 0644
+    owner: root
+    group: root
+
+# conflicted os-hardening configuration 'roles/os-hardening/tasks/main.yaml#configure log rotate.'
+- name: configure logrotate for kube-proxy.
+  template:
+    src: 'logrotate.conf.j2'
+    dest: '/etc/logrotate.conf'
+    mode: 0644
+    owner: root
+    group: root
+

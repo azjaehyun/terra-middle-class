@@ -1,0 +1,14 @@
+---
+
+# defaults for useradd
+os_useradd_mail_dir: /var/mail
+
+
+os_env_umask: 002
+
+os_auth_uid_min: 1000
+os_auth_gid_min: 1000
+os_auth_sys_uid_min: 100
+os_auth_sys_uid_max: 999
+os_auth_sys_gid_min: 100
+os_auth_sys_gid_max: 999

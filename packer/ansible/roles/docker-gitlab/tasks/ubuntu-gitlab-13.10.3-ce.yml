@@ -1,0 +1,36 @@
+---
+- name: copy files to temporary directory
+  copy:
+    src: "13.10.3-ce/"
+    dest: "/tmp/dockerfile"
+
+#- name: configure gitlab.
+#  vars:
+#    docker_service_path: "{{ docker_dynamic_vars.docker_service_path }}"
+#    docker_socket_path: "{{ docker_dynamic_vars.docker_socket_path }}"
+#  template:
+#    src: '13.10.3-ce/gitlab.rb'
+#    dest: '/tmp/dockerfile/assets/gitlab.rb'
+#    force: true
+#    mode: 0644
+#    owner: root
+#    group: root
+
+- name: build docker image
+  shell: |
+    cd /tmp/dockerfile/
+    chmod 0755 /tmp/dockerfile/assets/*
+    chmod 0644 /tmp/dockerfile/assets/gitlab.rb /tmp/dockerfile/assets/sshd_config
+    docker build --network=host -t "{{ image.name }}:{{ image.tag }}" -f /tmp/dockerfile/Dockerfile .
+
+- name: tagging docker image
+  shell: |
+    chdir /tmp/dockerfile/
+    docker tag '{{ image.name }}:{{ image.tag }}' '{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}'
+
+- name: push docker image
+  shell: |
+    chdir /tmp/dockerfile/
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push '{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}'
+  when: harbor.upload == true or harbor.upload == "true"

@@ -1,0 +1,32 @@
+---
+- name: assert variables
+  assert:
+    that: "{{ item }} is defined"
+    msg: "{{ item  }} is not defined"
+  with_items:
+    - harbor.domain
+    - harbor.username
+    - harbor.password
+    - harbor.project
+    - image.name
+    - image.tag
+
+- name: pre-processor for building docker image
+  shell: |
+    mkdir -p /tmp/dockerfile
+    echo "{{ harbor.password }}" > /tmp/dockerfile/.harbor.credentials
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"
+  when: oidc_plugin.enable == false or oidc_plugin.enable == "false"
+
+- name: include os specific task with keycloak plugin
+  include_tasks: "{{ os_name }}-oidc-plugin.yml"
+  when: oidc_plugin.enable == true or oidc_plugin.enable == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true
+  when: 1 == 2

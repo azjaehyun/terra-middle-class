@@ -1,0 +1,7 @@
+---
+# vars file for ubuntu
+jdk_paths:
+  openjdk-8-jdk: "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"
+  openjdk-11-jdk: "/usr/lib/jvm/java-11-openjdk-amd64/bin/java"
+
+# default_jdk:

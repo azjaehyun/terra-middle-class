@@ -1,0 +1,7 @@
+---
+- name: install the package unzip
+  apt:
+    name: unzip
+    state: 'present'
+    update_cache: 'yes'
+

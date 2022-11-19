@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db
+  namespace: default
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:12.7-alpine # https://hub.docker.com/_/postgres
+          envFrom:
+            - configMapRef:
+                name: postgres-cm
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          volumeMounts:
+            - name: postgresql
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgresql
+          persistentVolumeClaim:
+            claimName: postgres-claim

@@ -1,0 +1,17 @@
+-w /usr/bin/dockerd -k docker
+-w /usr/bin/docker -k docker
+-w /var/lib/docker -k docker
+-w /etc/docker -k docker
+-w /etc/default/docker -k docker
+-w /etc/sysconfig/docker -k docker
+-w /etc/docker/daemon.json -k docker
+-w /usr/bin/containerd -k docker
+-w /usr/bin/docker-containerd -k docker
+-w /usr/bin/runc -k docker
+-w /usr/bin/docker-runc -k docker
+{% if docker_service_path is defined %}
+-w {{ docker_service_path }} -k docker
+{% endif %}
+{% if docker_socket_path is defined %}
+-w {{ docker_socket_path }} -k docker
+{% endif %}

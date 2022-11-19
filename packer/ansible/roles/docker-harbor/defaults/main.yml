@@ -1,0 +1,12 @@
+---
+# mandatory variables for harbor
+harbor:
+  domain: harbor.toolchain
+  username: admin
+  password: admin123$
+  project: tools/harbor
+  upload: false
+
+# mandatory variables for docker image
+image:
+  tag: v2.3.0

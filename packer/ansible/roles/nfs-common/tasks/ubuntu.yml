@@ -1,0 +1,8 @@
+---
+- name: install the packages for nfs-common
+  apt:
+    pkg:
+      - conntrack
+      - socat
+      - nfs-common
+    state: latest

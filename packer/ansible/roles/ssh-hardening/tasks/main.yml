@@ -1,0 +1,6 @@
+- name: include os-specific vars
+  include_vars: "{{ os_name }}.yml"
+  when: "'{{ os_name }}.yml' is file"
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

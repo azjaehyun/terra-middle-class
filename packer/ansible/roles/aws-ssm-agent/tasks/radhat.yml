@@ -1,0 +1,7 @@
+---
+- name: Install rpm file for Redhat Family (Amazon Linux, RHEL, and CentOS) 32/64-bit
+  become: yes
+  become_user: root
+  yum:
+    name: "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_{{ url }}/amazon-ssm-agent.rpm"
+    state: present

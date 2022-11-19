@@ -1,0 +1,4 @@
+# https://packages.gitlab.com/gitlab/gitlab-ee
+RELEASE_PACKAGE=gitlab-ee
+RELEASE_VERSION=13.10.2-ee
+DOWNLOAD_URL=https://packages.gitlab.com/gitlab/gitlab-ee/packages/ubuntu/bionic/gitlab-ee_13.10.2-ee.0_amd64.deb/download.deb

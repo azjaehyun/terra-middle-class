@@ -1,0 +1,78 @@
+{
+  "variables": {
+    "aws_profile": "{{env `AWS_PROFILE`}}",
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_instance_type": "m5.large",
+    "aws_ami_name": "dxsonarqube-node",
+    "ami_description": "Ubuntu Server 18.04 LTS (HVM) Golden AMI",
+    "os_name": "ubuntu-18.04",
+    "version": "{{isotime `20060102-1504`}}",
+    "ssh_username": "ubuntu",
+    "root_volume_size": "10",
+    "data_volume_size": "50"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "profile": "{{user `aws_profile`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "architecture": "x86_64",
+          "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
+          "block-device-mapping.volume-type": "gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": [
+          "099720109477"
+        ],
+        "most_recent": true
+      },
+      "ami_name": "{{user `aws_ami_name`}}-{{user `os_name`}}-{{user `version`}}-ami",
+      "instance_type": "{{user `aws_instance_type`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "launch_block_device_mappings":[
+        {
+          "device_name":"/dev/sda1",
+          "volume_size": "{{user `root_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        },
+        {
+          "device_name":"/dev/sdb",
+          "volume_size":"{{user `data_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        }
+      ],
+      "ami_block_device_mappings":[
+        {
+          "device_name":"/dev/sdb",
+          "volume_size":"{{user `data_volume_size`}}",
+          "volume_type":"gp2",
+          "delete_on_termination":true
+        }
+      ],
+      "tags": {
+        "Name": "{{user `aws_ami_name`}}-{{user `os_name`}}-{{user `version`}}-ami",
+        "Version": "{{user `version`}}",
+        "OS_FAMILY": "Debian",
+        "OS_VERSION": "18.04 LTS",
+        "Application": "sonarqube",
+        "Builder": "packer"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "echo 'Waiting for OS Boot-up ' && while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo -n ' .'; sleep 2; done"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./ansible/playbook-eks-sonarqube.yml",
+      "extra_arguments": [ "-vvv" ]
+    }
+  ]
+}

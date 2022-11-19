@@ -1,0 +1,28 @@
+
+---
+# download and install the module aws-iam-authenticator
+- name: download aws-iam-authenticator checksum file.
+  get_url:
+    url: "{{ aws_iam_authenticator_download }}.sha256"
+    dest: "/tmp/aws-iam-authenticator.sha256"
+    force_basic_auth: yes
+
+- name: set aws-iam-authenticator checksum variable.
+  shell: "cat /tmp/aws-iam-authenticator.sha256 | head -n1 | cut -d ' ' -f1"
+  register: authenticator_checksum_file # 해쉬 코드만 볼 수 있게 가공 처리
+
+- name: check exists aws-iam-authenticator file
+  stat:
+    path: '/usr/bin/aws-iam-authenticator'
+  register: iam_authenticator_file # stat 하위에 path 결과값 restier(iam_authenticator_file 저장)
+
+- name: download aws-iam-authenticator shell file.
+  get_url:
+    url: "{{ aws_iam_authenticator_download }}"
+    dest: '/usr/bin/aws-iam-authenticator'
+    checksum: "sha256:{{ authenticator_checksum_file.stdout }}" # 위 resister 모듈에 저장된 iam_authenticator_file 과 비교 후 다운로드
+    mode: 0555
+    force_basic_auth: yes
+  when: not iam_authenticator_file.stat.exists # /usr/bin/aws-iam-authenticator 가 존재 하지 않으면 해당 task 실행
+
+

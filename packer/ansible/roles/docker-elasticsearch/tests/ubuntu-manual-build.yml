@@ -1,0 +1,65 @@
+#---
+#- name: deck docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-3.6.1 https://github.com/spinnaker/deck.git
+#    cd deck
+#    npm install
+#    yarn build
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/deck:3.6.1 -f ./Dockerfile.slim .
+#
+#- name: gate docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-1.21.0 https://github.com/spinnaker/gate.git
+#    cd gate
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/gate:1.21.0 -f ./Dockerfile.slim .
+#
+#- name: igor docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-1.15.0 https://github.com/spinnaker/igor.git
+#    cd igor
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/igor:1.15.0 -f ./Dockerfile.slim .
+#
+#- name: echo docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-2.16.0 https://github.com/spinnaker/echo.git
+#    cd echo
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/echo:2.16.0 -f ./Dockerfile.slim .
+#
+#- name: orca docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-2.19.0 https://github.com/spinnaker/orca.git
+#    cd orca
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/orca:2.19.0 -f ./Dockerfile.slim .
+#
+#- name: clouddriver docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-7.3.3 https://github.com/spinnaker/clouddriver.git
+#    cd clouddriver
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/clouddriver:7.3.3 -f ./Dockerfile.slim .
+#
+#- name: rosco docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-0.24.0 https://github.com/spinnaker/rosco.git
+#    cd rosco
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/rosco:0.24.0 -f ./Dockerfile.slim .
+#
+#- name: front50 docker build
+#  shell: |
+#    chdir /tmp/dockerfile
+#    git clone -b version-0.26.2 https://github.com/spinnaker/front50.git
+#    cd front50
+#    ./gradlew clean install -x test
+#    docker build -t {{ harbor.domain }}/{{harbor.project}}/front50:0.26.2 -f ./Dockerfile.slim .

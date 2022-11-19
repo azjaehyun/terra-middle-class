@@ -1,0 +1,20 @@
+{
+  "bridge": "none",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "50m",
+    "max-file": "15"
+  },
+  "live-restore": true,
+  "max-concurrent-downloads": 10,
+  "default-ulimits": {
+    "memlock": {
+      "Hard": -1,
+      "Name": "memlock",
+      "Soft": -1
+    }
+  },
+  "insecure-registries" : [
+    "harbor.toolchain"
+  ]
+}

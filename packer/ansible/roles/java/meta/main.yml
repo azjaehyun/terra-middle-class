@@ -1,0 +1,11 @@
+galaxy_info:
+  author: symplesims
+  description: devops
+  company: BespinGlobal
+
+  min_ansible_version: 2.10
+
+  galaxy_tags: []
+
+dependencies:
+  - sudo # java packege upgrade

@@ -1,0 +1,13 @@
+---
+- name: istioctl install
+  shell: "cd /opt && curl -L {{ istio_download_url }} | ISTIO_VERSION={{ istio_version}} TARGET_ARCH=x86_64 sh -"
+
+- name: istioctl setting
+  file:
+    src: "/opt/istio-{{ istio_version }}/bin/istioctl"
+    dest: "/usr/bin/istioctl"
+    owner: root
+    group: root
+    mode: 0555
+    state: hard
+

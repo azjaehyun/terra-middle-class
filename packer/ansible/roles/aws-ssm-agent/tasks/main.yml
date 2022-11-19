@@ -1,0 +1,15 @@
+---
+# tasks file for aws-ssm
+- name: Get CPU architecture
+  command: getconf LONG_BIT
+  register: cpu_arch
+  changed_when: False
+  check_mode: no
+
+- name: Change URL destination for 32bit arch
+  set_fact:
+    url: "386"
+  when: cpu_arch.stdout == '32'
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

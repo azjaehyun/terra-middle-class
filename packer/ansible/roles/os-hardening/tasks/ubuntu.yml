@@ -1,0 +1,71 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: remove deprecated or insecure packages | package-01 - package-09
+  apt:
+    name: '{{ os_security_packages_list }}'
+    state: 'absent'
+    purge: 'yes'
+
+- name: add alias vim and prompt
+  lineinfile:
+    path: '/etc/bash.bashrc'
+    line: "{{ item }}"
+    insertafter: EOF
+  with_items:
+    - "alias vi='vim'"
+    - "\nexport PS1='\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]@\\[$(tput sgr0)\\]\\[\\033[38;5;2m\\]\\h\\[$(tput sgr0)\\]:\\[$(tput sgr0)\\]\\[\\033[38;5;12m\\]\\W\\[$(tput sgr0)\\]\\$\\[$(tput sgr0)\\] '"
+
+- name: change prompt for ubuntu
+  become: no
+  lineinfile:
+    path: '/home/ubuntu/.bashrc'
+    line: "\nexport PS1='\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]@\\[$(tput sgr0)\\]\\[\\033[38;5;2m\\]\\h\\[$(tput sgr0)\\]:\\[$(tput sgr0)\\]\\[\\033[38;5;12m\\]\\W\\[$(tput sgr0)\\]\\$\\[$(tput sgr0)\\] '"
+    insertafter: EOF
+
+- name: change prompt for root
+  become: true
+  lineinfile:
+    path: '/root/.bashrc'
+    line: "\nexport PS1='\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]@\\[$(tput sgr0)\\]\\[\\033[38;5;2m\\]\\h\\[$(tput sgr0)\\]:\\[$(tput sgr0)\\]\\[\\033[38;5;12m\\]\\W\\[$(tput sgr0)\\]\\$\\[$(tput sgr0)\\] '"
+    insertafter: EOF
+
+- name: add kernel parameters
+  blockinfile:
+    path: '/etc/sysctl.conf'
+    create: false
+    marker: "\n# {mark} BASIC PARAMETERS -----"
+    insertafter: EOF
+    content: |
+      vm.swappiness=0
+      net.ipv4.tcp_timestamps=0
+      net.ipv4.tcp_sack=1
+      net.core.netdev_max_backlog=250000
+      net.core.rmem_max=4194304
+      net.core.wmem_max=4194304
+      net.core.rmem_default=4194304
+      net.core.wmem_default=4194304
+      net.core.optmem_max=4194304
+      net.ipv4.tcp_rmem=4096 87380 4194304
+      net.ipv4.tcp_wmem=4096 65536 4194304
+      net.ipv4.tcp_low_latency=1
+      net.ipv6.conf.all.disable_ipv6 = 1
+      net.ipv6.conf.default.disable_ipv6 = 1
+      net.ipv4.tcp_adv_win_scale=1
+      net.ipv4.tcp_max_syn_backlog = 8192
+      fs.aio-max-nr = 1048576
+      fs.file-max = 6815744
+
+- include_tasks: ubuntu-chrony.yml
+  tags: chrony
+
+- include_tasks: ubuntu-sysstat.yml
+  tags: sysstat
+
+- name: configure password complecity policy
+  include_tasks: ubuntu-pam.yml
+  tags: pam

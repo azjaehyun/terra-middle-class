@@ -1,0 +1,6 @@
+---
+- name: upgrade the package sudo
+  yum:
+    name: sudo
+    state: 'latest'
+    update_only: true

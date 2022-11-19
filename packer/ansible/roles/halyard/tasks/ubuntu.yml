@@ -1,0 +1,30 @@
+---
+- name: download halyard
+  get_url:
+    url: "https://raw.githubusercontent.com/spinnaker/halyard/master/install/debian/InstallHalyard.sh"
+    dest: "/tmp/InstallHalyard.sh"
+    force_basic_auth: yes
+    mode: 0755
+
+- name: run halyard installer
+  become: true
+  command: bash /tmp/InstallHalyard.sh -y --user ubuntu
+
+
+- name: creates a cron tab for halyard
+  cron:
+    name: "cron start halyard"
+    special_time: reboot
+    job: "/usr/local/bin/hal -v > /dev/null 2>&1"
+    user: ubuntu
+    state: present
+
+- name: install halyard service systemd unit file.
+  template:
+    src: 'halyard.service.j2'
+    dest: '/etc/systemd/system/halyard.service'
+    mode: 0644
+    owner: root
+    group: root
+  notify: 'systemd daemon-reload'
+  when: 1 == 2

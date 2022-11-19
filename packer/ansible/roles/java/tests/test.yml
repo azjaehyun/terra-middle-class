@@ -1,0 +1,8 @@
+---
+- hosts: dxtest
+  become: true
+  roles:
+    - role: java
+      java_packages:
+        - openjdk-8-jdk
+        -

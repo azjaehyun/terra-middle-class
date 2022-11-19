@@ -1,0 +1,13 @@
+---
+# mandatory variables for harbor
+harbor:
+  domain: harbor.toolchain
+  username: admin
+  password: admin123$
+  project: tools
+  upload: false
+
+# mandatory variables for docker image
+image:
+  name: grafana
+  tag: 8.0.3

@@ -1,0 +1,29 @@
+---
+# example for collections
+- name: example1 select value from map.
+  vars:
+    python:
+      Designer: 'Guido van Rosum'
+      Developer: 'Python Software Foundation'
+      OS: 'Cross-platform'
+  debug:
+    msg: "{{ python[ 'Designer' ] }}"
+
+- name: example2 select value from map.
+  vars:
+    python:
+      Designer: 'Guido van Rosum'
+      Developer: 'Python Software Foundation'
+      OS: 'Cross-platform'
+  debug:
+    msg: "{{ python.OS }}"
+
+- name: example3 select value from map.
+  vars:
+    name: "OS"
+    python:
+      Designer: 'Guido van Rosum'
+      Developer: 'Python Software Foundation'
+      OS: 'Cross-platform'
+  debug:
+    msg: "{{ python[ name] }}"

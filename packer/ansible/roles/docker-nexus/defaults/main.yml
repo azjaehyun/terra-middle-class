@@ -1,0 +1,15 @@
+---
+harbor:
+  domain: harbor.toolchain
+  username: admin
+  password: admin123$
+  project: tools
+  upload: false
+
+# mandatory variables for docker image
+image:
+  name: nexus3
+  tag: 3.31.0
+keycloak_plugin:
+  enable: false
+  version: 0.6.0-SNAPSHOT

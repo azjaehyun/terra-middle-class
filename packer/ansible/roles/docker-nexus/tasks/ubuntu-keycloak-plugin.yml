@@ -1,0 +1,20 @@
+---
+- name: copy keycloak-plugin to target directory
+  copy:
+    src: "nexus3-keycloak-plugin/{{ keycloak_plugin.version }}/"
+    dest: "/tmp/dockerfile"
+
+- name: generate nexus dockerfile
+  vars:
+    nexus_version: "{{ image.tag }}"
+    keycloak_plugin_version: "{{ keycloak_plugin.version }}"
+  template:
+    src: 'Dockerfile.j2'
+    dest: '/tmp/dockerfile/Dockerfile'
+    force: true
+    mode: 0644
+
+- name: build nexus image
+  shell: |
+    chdir /tmp/dockerfile/
+    docker build -t "{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}" .

@@ -1,0 +1,22 @@
+---
+- name: preparing partition the disks
+  shell: systemctl stop rsyslog irqbalance polkit
+
+# you can check attached volumn device 'lsblk' command
+- name: execute partition for default
+  shell: |
+    . /tmp/functions.sh
+    partition_disks_default /dev/nvme1n1
+  when: disk_part_target == "default"
+
+- name: execute partition the disks for home
+  shell: |
+    . /tmp/functions.sh
+    partition_disks /dev/nvme1n1
+  when: disk_part_target == "home"
+
+- name: execute partition for gitlab
+  shell: |
+    . /tmp/functions.sh
+    partition_disks_gitlab /dev/nvme1n1
+  when: disk_part_target == "gitlab"

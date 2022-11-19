@@ -1,0 +1,24 @@
+---
+- name: install minikube
+  apt:
+    deb: "https://storage.googleapis.com/minikube/releases/v{{ minikube_version }}/minikube_{{ minikube_version }}-0_amd64.deb"
+    state: present
+
+- name: create symbolic link
+  file:
+    src: "/usr/bin/minikube"
+    dest: "/bin/minikube"
+    state: link
+  when: 1 == 2
+
+- name: user 'ubuntu' appending the group 'docker' to the user's groups
+  user:
+    name: ubuntu
+    # shell: /bin/bash
+    groups: docker
+    append: yes
+
+- name: copy files to temporary directory
+  copy:
+    src: "samples/"
+    dest: "/tmp/samples/k8s/"

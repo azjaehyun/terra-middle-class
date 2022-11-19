@@ -1,0 +1,16 @@
+---
+- name: Building AWS Bastion AMI Image
+  hosts: all
+  become: true
+  vars_files:
+    - "group_vars/defaults.yml"
+  roles:
+    - role: sudo
+    - role: java
+      java_packages:
+        - openjdk-8-jdk
+        - openjdk-11-jdk
+      default_jdk: "openjdk-8-jdk"
+    - role: whatap
+      whatap_server_type: "single"
+    - role: cleansing

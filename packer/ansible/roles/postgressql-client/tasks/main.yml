@@ -1,0 +1,4 @@
+---
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

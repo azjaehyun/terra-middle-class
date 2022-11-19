@@ -1,0 +1,15 @@
+---
+- name: include os-specific vars
+  include_vars: "{{ os_name }}.yml"
+
+
+- name: prepare install task for aws-iam-authenticator.
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/usr/bin/aws-iam-authenticator"
+    - "/tmp/aws-iam-authenticator.sha256"
+
+- name: include os specific task
+  include_tasks: "{{ os_name }}.yml"

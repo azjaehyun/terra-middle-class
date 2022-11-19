@@ -1,0 +1,8 @@
+---
+- name: enabled whatap-single service
+  systemd:
+    name: whatap-single.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+  listen: 'restart whatap'

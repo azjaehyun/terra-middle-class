@@ -1,0 +1,6 @@
+---
+# defaults variable for packer
+packer_version: "1.7.0"
+
+# packer release url - https://releases.hashicorp.com/packer/
+packer_download_url: ""

@@ -1,0 +1,29 @@
+---
+- name: ensure 'man' directory exists.
+  file:  # noqa 208
+    path: /usr/share/man/man1
+    state: directory
+    recurse: true
+
+- name: add ubuntu openjdk ppa
+  apt_repository: repo='ppa:openjdk-r/ppa'
+
+- name: install the packages the java.
+  apt:
+    name: "{{ java_packages }}"
+    state: latest
+
+- name: initialize default_jdk_path vars.
+  set_fact:
+    default_jdk_path: "{{ jdk_paths[ default_jdk ] | default('/usr/lib/jvm/java-11-openjdk-amd64/bin/java') }}"
+
+- name: check if java-file exists.
+  stat:
+    path: "{{ default_jdk_path }}"
+  register: java_bin_file
+
+- name: correct java version selected
+  alternatives:
+    name: java
+    path: "{{ default_jdk_path }}"
+  when: java_bin_file.stat.exists

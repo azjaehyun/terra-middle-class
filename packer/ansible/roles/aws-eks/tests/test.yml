@@ -1,0 +1,5 @@
+---
+- hosts: dxtest
+  become: true
+  roles:
+    - aws-eks

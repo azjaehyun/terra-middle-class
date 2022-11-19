@@ -1,0 +1,26 @@
+---
+- include_tasks: ubuntu-1.7.yml
+  when: image.tag == "1.7"
+  tags: install jdk-11
+
+- name: copy files to temporary directory
+  copy:
+    src: "1.7/"
+    dest: "/tmp/dockerfile"
+
+- name: build docker image
+  shell: |
+    cd /tmp/dockerfile/
+    docker build -t "{{ image.name }}:{{ image.tag }}" -f /tmp/dockerfile/Dockerfile.x86_64 .
+
+- name: tagging docker image
+  shell: |
+    chdir /tmp/dockerfile/
+    docker tag '{{ image.name }}:{{ image.tag }}' '{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}'
+
+- name: push docker image
+  shell: |
+    chdir /tmp/dockerfile/
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push '{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}'
+  when: harbor.upload == true or harbor.upload == "true"

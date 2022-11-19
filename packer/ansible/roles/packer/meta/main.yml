@@ -1,0 +1,3 @@
+#prepare install task for task "extract packer archive file"
+dependencies:
+  - unzip

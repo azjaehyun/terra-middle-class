@@ -1,0 +1,14 @@
+---
+- name: cleansing
+  shell: |
+    sleep 10
+    rm -f /var/lib/apt/lists/lock
+    rm -f /var/cache/apt/archives/lock
+    rm -f /var/lib/dpkg/lock*
+    sudo dpkg --configure -a
+  ignore_errors: true
+
+- name: update apt packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400

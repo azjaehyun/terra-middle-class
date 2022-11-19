@@ -1,0 +1,48 @@
+- name: include os-specific vars.
+  include_vars: "{{ os_name }}.yml"
+  when: "'{{ os_name }}.yml' is file"
+
+- name: configure local timezone to Seoul.
+  timezone:
+    name: "{{ timezone | default('UTC') }}"
+
+- name: configure kernel limits parameters..
+  become: true
+  template:
+    src: 'limits.conf.j2'
+    dest: '/etc/security/limits.conf'
+
+- name: configure login password policy.
+  import_tasks: login_defs.yml
+  tags: login_defs
+
+- name: configure terminal environments | session timeout | command history.
+  lineinfile:
+    path: '/etc/profile'
+    insertafter: EOF
+    line: "{{ item }}"
+  with_items:
+    - "export TMOUT=300 # unit: secs"
+    - "export HISTSIZE=9999"
+    - "export HISTFILESIZE=9999"
+    - "export HISTTIMEFORMAT=\"%Y-%m-%d [%H:%M:%S] : \""
+
+- name: configure log rotate.
+  replace:
+    path: '/etc/logrotate.conf'
+    regexp: '^rotate [0-9]$'
+    replace: 'rotate 24'
+
+- name: file permissions and access control.
+  import_tasks: file_permission.yml
+  tags: file_permission
+
+- include_tasks: "{{ os_name }}.yml"
+
+- name: clean-up temporary directories
+  shell: |
+    killall apt apt-get
+    rm -rf /var/lib/apt/lists/lock
+    rm -rf /var/cache/apt/archives/lock
+    rm -rf /var/lib/dpkg/lock*
+    sudo dpkg --configure -a

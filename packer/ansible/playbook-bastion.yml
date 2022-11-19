@@ -1,0 +1,10 @@
+---
+- name: Provisioning
+  hosts: image.builder
+  become: true
+  vars_files:
+    - "group_vars/defaults.yml"
+  roles:
+    - role: bastion
+    - role: postgressql-client
+      version: 12

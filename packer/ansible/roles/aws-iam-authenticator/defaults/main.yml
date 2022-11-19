@@ -1,0 +1,8 @@
+---
+# aws-authenticator_download
+aws_iam_authenticator_download: "https://amazon-eks.s3.us-west-2.amazonaws.com/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/aws-iam-authenticator"
+
+# iam_authenticator dependencies
+kubernetes_version: "1.19.6"
+kubernetes_build_date: "2021-01-05"
+

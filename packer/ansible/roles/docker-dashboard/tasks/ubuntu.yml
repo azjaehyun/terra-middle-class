@@ -1,0 +1,24 @@
+---
+- name: dashboard docker image pull
+  shell: |
+    docker pull kubernetesui/dashboard:v2.2.0
+    docker pull kubernetesui/metrics-scraper:v1.0.6
+
+- name: dashboard docker image tag
+  shell: |
+    docker tag kubernetesui/dashboard:v2.2.0 {{ harbor.domain }}/{{harbor.project}}/dashboard:v2.2.0
+    docker tag kubernetesui/metrics-scraper:v1.0.6 {{ harbor.domain }}/{{harbor.project}}/metrics-scraper:v1.0.6
+
+- name: dashboard docker image push
+  shell: |
+    chdir /tmp/dockerfile
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push {{ harbor.domain }}/{{harbor.project}}/dashboard:v2.2.0
+    docker push {{ harbor.domain }}/{{harbor.project}}/metrics-scraper:v1.0.6
+  when: harbor.upload == true or harbor.upload == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true

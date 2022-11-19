@@ -1,0 +1,20 @@
+---
+- name: copy oidc-plugin to target directory
+  copy:
+    src: "oidc-plugin/{{ oidc_plugin.version }}/"
+    dest: "/tmp/dockerfile"
+
+- name: generate sonarqube dockerfile
+  vars:
+    sonarqube_version: "{{ image.tag }}"
+    plugin_version: "{{ oidc_plugin.version }}"
+  template:
+    src: 'Dockerfile.j2'
+    dest: '/tmp/dockerfile/Dockerfile'
+    force: true
+    mode: 0644
+
+- name: build docker image
+  shell: |
+    chdir /tmp/dockerfile/
+    docker build -t "{{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}" .

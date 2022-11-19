@@ -1,0 +1,21 @@
+---
+- name: download package the packer.
+  get_url:
+    url: "{{ packer_download_url }}"
+    dest: "/tmp/packer-{{ packer_version }}.zip"
+    force_basic_auth: yes
+
+- name: create packer directory.
+  file:
+    path: '/opt/packer/bin'
+    state: directory
+
+- name: extract packer archive file.
+  unarchive:
+    remote_src: yes
+    src: "/tmp/packer-{{ packer_version }}.zip"
+    dest: '/opt/packer/bin'
+    mode: 0755
+
+- name: create symbolic link for packer.
+  shell: ln -s /opt/packer/bin/packer /usr/bin/packer

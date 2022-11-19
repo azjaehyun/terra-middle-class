@@ -1,0 +1,40 @@
+---
+- name: create cni directory.
+  file:
+    path: '/opt/cni/bin'
+    state: directory
+
+# download and install the module cni plugin.
+- name: download cni checksum file.
+  get_url:
+    url: "{{ cni_plugin_download }}.sha512"
+    dest: "/tmp/cni.sha512"
+    force_basic_auth: yes
+
+- name: set cni checksum variable.
+  shell: "cat /tmp/cni.sha512 | head -n1 | cut -d ' ' -f1"
+  register: cni_checksum_file
+
+- name: check exists cni file
+  stat:
+    path: '/opt/cni/bin/flannel'
+  register: cni_file
+
+- name: download cni archive file.
+  get_url:
+    url: "{{ cni_plugin_download }}"
+    dest: '/tmp/{{ cni_plugin_filename }}.tgz'
+    checksum: "sha512:{{ cni_checksum_file.stdout }}"
+    force_basic_auth: yes
+  when: not cni_file.stat.exists
+
+- name: install cni module.
+  unarchive:
+    src: '/tmp/{{ cni_plugin_filename }}.tgz'
+    dest: '/opt/cni/bin'
+    remote_src: yes
+  when: not cni_file.stat.exists
+
+- name: delete cni archive file.
+  shell: "rm /tmp/{{ cni_plugin_filename }}.tgz /tmp/cni.sha512"
+  when: not cni_file.stat.exists

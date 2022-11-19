@@ -1,0 +1,41 @@
+---
+# http_proxy environment variables
+environment_vars: {}
+
+reboot_wait: 'yes'
+reboot_interval: 'no'
+
+#############
+# docker-ce #
+#############
+docker_repo_url: "https://download.docker.com/linux"
+docker_apt_gpg_key: "{{ docker_repo_url }}/{{ os_name }}/gpg"
+
+# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+docker_apt_repository: "deb [arch=amd64] {{ docker_repo_url }}/{{ os_name }} {{ ansible_distribution_release }} stable"
+dockerce_version: "5:20.10.5~3-0~ubuntu-bionic"
+dockercecli_version: "5:20.10.5~3-0~ubuntu-bionic"
+containerdio_version: "1.4.4-1"
+
+aws_eks_region: "amazonaws.com"
+aws_s3_domain: "amazonaws.com"
+# china_region: amazonaws.com.cn, us-iso-east-1_region: c2s.ic.govm us-isob-east-1_region: sc2s.sgov.gov
+
+kubernetes_version: "1.19.6"
+kubernetes_build_date: "2021-01-05"
+
+# does not support download region such as ap-northeast-2 ...
+# s3_kubectl_download: "https://amazon-eks.s3.{{ aws_region }}.{{ aws_s3_domain }}/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/kubectl"
+s3_kubectl_download: "https://amazon-eks.s3.us-west-2.amazonaws.com/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/kubectl"
+s3_kubelet_download: "https://amazon-eks.s3.us-west-2.amazonaws.com/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/kubelet"
+s3_iam_authenticator_download: "https://amazon-eks.s3.us-west-2.amazonaws.com/{{ kubernetes_version }}/{{ kubernetes_build_date }}/bin/linux/amd64/aws-iam-authenticator"
+
+# CNI PLUGIN VERSION
+cni_plugin_version: "v0.8.7"
+cni_plugin_filename: "cni-plugins-linux-amd64-{{ cni_plugin_version }}"
+cni_plugin_download: "https://github.com/containernetworking/plugins/releases/download/{{ cni_plugin_version }}/{{ cni_plugin_filename }}.tgz"
+
+# apply disk partition and mount volumes
+disk_part: false
+# disk_part_target is default, gitlab, home
+disk_part_target: default

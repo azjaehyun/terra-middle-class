@@ -1,0 +1,6 @@
+---
+- name: install the package lsof
+  apt:
+    name: lsof
+    state: 'present'
+    update_cache: 'yes'

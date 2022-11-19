@@ -1,0 +1,38 @@
+---
+- name: file permissions and access control
+  shell:
+    cmd: |
+      chmod 750 /usr/sbin/useradd
+      chmod 750 /usr/sbin/userdel
+      chmod 750 /usr/sbin/usermod
+      chmod 750 /usr/bin/top
+      chmod 750 /sbin/fdisk
+      chmod 750 /sbin/mkfs*
+      chmod 750 /sbin/fsck*
+      chmod 100 /usr/bin/pstree
+      chmod 100 /usr/bin/w
+      chmod 100 /usr/bin/who
+      chmod 100 /sbin/ifconfig
+      chmod 100 /usr/bin/make
+      chmod 700 /usr/bin/wget
+      chmod 700 /usr/bin/curl
+      chmod 640 /etc/at.deny
+      chmod 600 /var/log/wtmp
+      chmod 100 /usr/bin/newgrp
+      chmod 100 /sbin/unix_chkpwd
+      chmod 100 /usr/bin/at
+      chattr +i /usr/sbin/useradd
+      chattr +i /usr/sbin/userdel
+      chattr +i /usr/sbin/usermod
+      chattr +i /usr/bin/top
+      chattr +i /sbin/fdisk
+      chattr +i /sbin/mkfs*
+      chattr +i /sbin/fsck*
+  become: true
+  ignore_errors: true
+  register: filesystems
+
+- name: print tasks status
+  debug:
+      msg: "Completed permission and protection for root filesystems)  {{ filesystems }}"
+

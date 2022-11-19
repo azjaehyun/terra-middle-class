@@ -1,0 +1,12 @@
+---
+- name: systemd daemon-reload
+  systemd:
+    daemon_reload: true
+  listen: 'systemd daemon-reload'
+
+- name: restart halyard service
+  service:
+    name: "halyard"
+    state: 'restarted'
+    enabled: true
+  listen: 'systemd daemon-reload'

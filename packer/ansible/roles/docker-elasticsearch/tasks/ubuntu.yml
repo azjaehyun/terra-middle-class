@@ -1,0 +1,38 @@
+---
+- name: create host storage
+  shell: |
+    mkdir -p /data/elasticsearch/data
+    mkdir -p /data/elasticsearch/plugins
+    mkdir -p /data/elasticsearch/data/dictionary
+    mkdir -p /data/elasticsearch/data/data
+    mkdir -p /data/elasticsearch/data/master
+    chown 1000:1000 -R /data/elasticsearch
+
+- name: copy files to directory
+  copy:
+    src: "dictionary/"
+    dest: "/data/elasticsearch/data/dictionary/"
+    owner: 1000
+    group: 1000
+    mode: 0750
+
+- name: elasticsearch docker images pull
+  shell: |
+    docker pull docker.elastic.co/elasticsearch/elasticsearch:{{ image.tag }}
+
+- name: tagging docker images
+  shell: |
+    docker tag docker.elastic.co/elasticsearch/elasticsearch:{{ image.tag }} {{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}
+
+- name: push docker images
+  shell: |
+    chdir /tmp/dockerfile
+    cat /tmp/dockerfile/.harbor.credentials | docker login 'https://{{ harbor.domain }}' --username {{ harbor.username }} --password-stdin
+    docker push {{ harbor.domain }}/{{harbor.project}}/{{ image.name }}:{{ image.tag }}
+  when: harbor.upload == true or harbor.upload == "true"
+
+- name: flush temporary working directory
+  file:
+    path: '/tmp/dockerfile/'
+    state: absent
+  ignore_errors: true
