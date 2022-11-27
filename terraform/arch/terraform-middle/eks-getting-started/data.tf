@@ -1,6 +1,7 @@
-data "aws_acm_certificate" "this" {
-  domain = var.context.domain
-}
+#data "aws_acm_certificate" "this" {
+#  domain = var.context.domain
+#}
+
 
 data "aws_vpc" "this" {
   filter {
