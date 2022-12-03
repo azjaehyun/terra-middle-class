@@ -36,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "msa-maker-cluster-AmazonEKSVPCResourc
 
 resource "aws_security_group" "msa-maker-cluster" {
   name        = local.cluster_name
-  description = msa-maker Cluster communication with worker nodes"
+  description = "msa-maker cluster communication with worker nodes"
   vpc_id      = data.aws_vpc.this.id
 
   egress {
