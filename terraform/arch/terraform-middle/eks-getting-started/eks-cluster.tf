@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "msa-maker-cluster-AmazonEKSVPCResourc
 }
 
 resource "aws_security_group" "msa-maker-cluster" {
-  name        = local.cluster_name
+  name        = format("%s-eks-master", local.name_prefix)
   description = "msa-maker cluster communication with worker nodes"
   vpc_id      = data.aws_vpc.this.id
 
@@ -49,7 +49,7 @@ resource "aws_security_group" "msa-maker-cluster" {
   #tags = {
   #  Name = "terraform-eks-demo"
   #}
-  tags = var.tag_name
+  tags = merge(local.tags, {Name = format("%s-cluster-security_group", local.name_prefix)})
 }
 
 #resource "aws_security_group_rule" "msa-maker-cluster-ingress-workstation-https" {
