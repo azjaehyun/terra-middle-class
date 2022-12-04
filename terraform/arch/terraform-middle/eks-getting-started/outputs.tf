@@ -45,14 +45,14 @@ users:
       command: aws-iam-authenticator
       args:
         - --region
-        - var.aws_region
+        - "${var.aws_region}"
         - eks
         - get-token
-        - "--${local.cluster_name}"
+        - --clusster-name
         - "${local.cluster_name}"
       env:
       - name: AWS_PROFILE
-        value: var.aws_profile
+        value: "${var.aws_profile}"
 KUBECONFIG
 }
 
