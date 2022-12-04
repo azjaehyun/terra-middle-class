@@ -42,13 +42,13 @@ users:
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1beta1
-      command: aws-iam-authenticator
+      command: aws
       args:
         - --region
         - ${var.context.aws_region}
         - eks
         - get-token
-        - --clusster-name
+        - --cluster-name
         - ${local.cluster_name}
       env:
       - name: AWS_PROFILE
