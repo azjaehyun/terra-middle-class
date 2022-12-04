@@ -28,6 +28,15 @@ variable "keypair_name" {
   type        = string
 }
 
+variable "eks_min_size" {
+  description = "eks_node_group_min_size"
+  type = integer
+}
+
+variable "eks_max_size" {
+  description = "eks_node_group_max_size"
+  type = integer
+}
 
 locals {
   name_prefix               = format("%s-%s%s", var.context.project, var.context.region_alias, var.context.env_alias)

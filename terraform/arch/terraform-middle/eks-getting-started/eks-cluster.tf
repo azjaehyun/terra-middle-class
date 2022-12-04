@@ -46,9 +46,10 @@ resource "aws_security_group" "msa-maker-cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "terraform-eks-demo"
-  }
+  #tags = {
+  #  Name = "terraform-eks-demo"
+  #}
+  tags = var.tag_name
 }
 
 #resource "aws_security_group_rule" "msa-maker-cluster-ingress-workstation-https" {
@@ -61,7 +62,7 @@ resource "aws_security_group" "msa-maker-cluster" {
 #  type              = "ingress"
 #}
 
-resource "aws_eks_cluster" "demo" {
+resource "aws_eks_cluster" "master_node" {
   name     = local.cluster_name
   role_arn = aws_iam_role.msa-maker-cluster.arn
 
