@@ -44,7 +44,7 @@ resource "aws_eks_node_group" "node" {
   node_role_arn   = aws_iam_role.cluster-node.arn
   #subnet_ids      = aws_subnet.demo[*].id
   subnet_ids      = tolist(data.aws_subnet_ids.private.ids)
-  instance_type = ["m5.large"]
+  instance_types = ["m5.large"]
   disk_size = 50
 
   scaling_config {
