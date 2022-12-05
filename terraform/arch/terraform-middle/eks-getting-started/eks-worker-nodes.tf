@@ -38,6 +38,7 @@ resource "aws_iam_role_policy_attachment" "cluster-node-AmazonEC2ContainerRegist
   role       = aws_iam_role.cluster-node.name
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group#disk_size
 resource "aws_eks_node_group" "node" {
   cluster_name    = aws_eks_cluster.master_node.name
   node_group_name = format("%s-%s%s-node", var.context.project, var.context.region_alias, var.context.env_alias)

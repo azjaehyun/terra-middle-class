@@ -65,7 +65,7 @@ resource "aws_security_group" "msa-maker-cluster" {
 resource "aws_eks_cluster" "master_node" {
   name     = local.cluster_name
   role_arn = aws_iam_role.msa-maker-cluster.arn
-
+  version                   = "1.22"
   vpc_config {
     security_group_ids = [aws_security_group.msa-maker-cluster.id]
     #subnet_ids         = aws_subnet.demo[*].id
