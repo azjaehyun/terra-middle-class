@@ -13,16 +13,31 @@ terraform plan
 terraform apply
 ```
 
+### terraform document
+~~~
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+~~~
 
-## 1. MFA 토큰을 사용하여 AWS CLI 인증 설정
+-----
+
+
+### 1. MFA 토큰을 사용하여 AWS CLI 인증 설정
 ```
 https://aws.amazon.com/ko/premiumsupport/knowledge-center/authenticate-mfa-cli/
 ```
 
-## variable type
+-----
+
+
+
+### variable type
 https://www.terraform.io/language/expressions/types
 
-## Expression - https://www.terraform.io/language/expressions
+
+
+-----
+
+### Expression - https://www.terraform.io/language/expressions
 ```
 for https://honglab.tistory.com/216
 ```
