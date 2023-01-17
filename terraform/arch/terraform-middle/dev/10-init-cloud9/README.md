@@ -2,7 +2,7 @@
 * aws cli install & terraform cli install
 * aws configure 설정
 ```
-aws configure --profile terraformPrac  // 본인의 AWS_ACCESS_KEY , AWS_SECRET_ACCESS_KEY 넣기.
+aws configure // 본인의 AWS_ACCESS_KEY , AWS_SECRET_ACCESS_KEY 넣기.
 aws configure list
 // 위에 환경설정 경로는 해당경로에 있습니다 참고! cd ~/.aws/credentials
 ```

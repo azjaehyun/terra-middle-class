@@ -18,36 +18,6 @@ variable "context" {
 }
 
 
-variable "vpc_cidr" {
-  description = "Netmask B Class bandwidth for VPC CIDR"
-  type        = string
-}
-
-variable "keypair_name" {
-  description = "ec2 key pair name"
-  type        = string
-}
-
-variable "subnet_ids" {
-  description = "public"
-  type = set(string)
-}
-
-variable "apps" {
-  type = map(any)
-  default = {
-    "foo" = {
-      "region" = "us-east-1",
-    },
-    "bar" = {
-      "region" = "eu-west-1",
-    },
-    "baz" = {
-      "region" = "ap-south-1",
-    },
-  }
-}
-
 
 locals {
   name_prefix               = format("%s-%s%s", var.context.project, var.context.region_alias, var.context.env_alias)
