@@ -4,7 +4,7 @@
     "instance_type": "t2.micro",
     "region": "ap-northeast-2",
     "type": "amazon-ebs",
-    "source_ami": "ami-77d28157",
+    "source_ami": "ami-00f89d63f7ee5510d",
     "ssh_username": "ubuntu"
   }],
   "provisioners": [{
