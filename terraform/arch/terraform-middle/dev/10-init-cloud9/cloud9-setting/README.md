@@ -30,6 +30,8 @@ export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ## packer install
 ```
 sudo apt  install packer
+packer -version
+>> 1.0.4
 ```
 
 To build the AMI:
