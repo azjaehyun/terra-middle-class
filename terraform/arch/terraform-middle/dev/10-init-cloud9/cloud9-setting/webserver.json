@@ -2,9 +2,9 @@
   "builders": [{
     "ami_name": "packer-example",
     "instance_type": "t2.micro",
-    "region": "us-east-1",
+    "region": "ap-northeast-2",
     "type": "amazon-ebs",
-    "source_ami": "ami-terraform-web-server",
+    "source_ami": "ami-77d28157",
     "ssh_username": "ubuntu"
   }],
   "provisioners": [{
