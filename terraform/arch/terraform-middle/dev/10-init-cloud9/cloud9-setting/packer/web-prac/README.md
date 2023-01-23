@@ -27,18 +27,13 @@ export AWS_ACCESS_KEY_ID=(your access key id)
 export AWS_SECRET_ACCESS_KEY=(your secret access key)
 ```
 
-## packer ubuntu install
+## [packer ubuntu install](https://developer.hashicorp.com/packer/tutorials/docker-get-started/get-started-install-cli)
 ```
-sudo apt  install packer
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install packer
 packer -version
->> 1.0.4
-```
-
-## packer mac install
-```
-brew install packer
-packer -version
->> 1.0.4
+>> 1.8.5
 ```
 
 

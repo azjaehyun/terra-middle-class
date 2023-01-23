@@ -3,6 +3,10 @@ variable "server_port" {
   default     = 8080
 }
 
+variable "image_id" {
+  description = "ami image id"
+}
+
 variable "cluster_name" {
   description = "The name to use for all the cluster resources"
 }

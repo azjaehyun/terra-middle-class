@@ -26,8 +26,8 @@ source "amazon-ebs" "ubuntu" {
     owners      = ["099720109477"]
   }
   ssh_username = "ubuntu"
-  ssh_keypair_name = "terraformTest-key"
-  ssh_private_key_file = "~/.ssh/terraform-prac.pem"
+  #ssh_keypair_name = "terraformTest-key"
+  #ssh_private_key_file = "~/.ssh/terraform-prac.pem"
 }
 
 build {
