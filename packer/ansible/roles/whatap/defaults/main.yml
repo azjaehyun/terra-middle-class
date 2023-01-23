@@ -1,8 +1,0 @@
----
-# defaults whatap license 
-whatap_server_type: "single"
-whatap_restapi_token_key: "ZHhfd2hhdGFwX3Jlc3RhcGk="
-whatap_license: "z7vi2u294u51ke-z5n9i00p59atge-z1iddme9mhqes2-x64q9ske3e8vmg-z3vibekn3lsg5s-z29k36bigs08mv-z1s9p9lsuisvn3-xl9g4nvlj0foa-x1a2eo4e0ldt8a-z734cfqrdmj15b-z1lll7e33l0bdk-z1moqiiscamj4a-x9sspqo99ti17-z31dc3ngp75ohh-z2e1ede0hhpfpi-x2hdog2e7utv70-x6u00005tusetf"
-whatap_server_home_path: "/opt/whatap-home"
-whatap_path: "{{ whatap_server_home_path }}/whatap"
-JAVA_8_HOME_PATH: "/usr/lib/jvm/java-8-openjdk-amd64"

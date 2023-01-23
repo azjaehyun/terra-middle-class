@@ -1,0 +1,22 @@
+galaxy_info:
+  author: symplesims
+  description: devops
+  company: BespinGlobal
+
+  min_ansible_version: 2.10
+
+  galaxy_tags: []
+
+dependencies:
+    - unzip
+    - packer
+    - terraform
+    - aws-cli
+    - istioctl
+    - kubectl
+    - aws-iam-authenticator
+    - ansible
+    - helm
+    - java
+    - curl
+    #- halyard

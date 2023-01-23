@@ -1,7 +1,0 @@
----
-- name: add environment vars for http proxy
-  lineinfile:
-    path: '/etc/environment'
-    regexp: '^{{ item.key }}\ ?='
-    line: "{{ item.key }}=\"{{ item.value }}\""
-  with_dict: "{{ environment_vars }}"

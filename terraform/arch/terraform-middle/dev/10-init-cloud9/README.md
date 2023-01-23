@@ -11,7 +11,7 @@ aws configure list
 $ export AWS_DEFAULT_PROFILE=terraformPrac
 ```
 ---
-### [cloud9 생성](https://docs.aws.amazon.com/ko_kr/cloud9/latest/user-guide/tutorial-create-environment-cli-step1.html)
+### [cloud9 사전준비](https://docs.aws.amazon.com/ko_kr/cloud9/latest/user-guide/tutorial-create-environment-cli-step1.html)
 #### 주의사항
 * --subnet-id argument는 public subnet 이여야 합니다.
 * az는  ap-northeast-2a or ap-northeast-2c 여야 합니다. ap-northeast-2b는 생성시 오류
@@ -73,7 +73,7 @@ aws ec2 describe-subnets --filter 'Name=vpc-id,Values=vpc-0ba29b5a6c6ba9bb8' | j
 ...
 
 ```
-
+## cloud9 생성
 ```
 aws cloud9 create-environment-ec2 --name terraformPrac \
  --description "This environment is for the AWS Cloud9 terraformPrac." \

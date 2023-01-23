@@ -1,7 +1,0 @@
----
-- name: install the package htop
-  apt:
-    name: htop
-    state: 'present'
-    update_cache: 'yes'
-

@@ -1,4 +1,0 @@
----
-- name: sysctl env conf
-  shell: |
-    echo "fs.file-max=999999" >> /etc/sysctl.conf

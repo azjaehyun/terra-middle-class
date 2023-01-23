@@ -1,5 +1,0 @@
----
-- hosts: dxtest
-  become: true
-  roles:
-    - docker

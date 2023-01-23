@@ -1,6 +1,0 @@
-# https://packages.gitlab.com/gitlab/gitlab-ce
-PACKAGECLOUD_REPO=stable
-RELEASE_PACKAGE=gitlab-ce
-RELEASE_VERSION=13.10.3-ce.0
-DOWNLOAD_URL=https://packages.gitlab.com/gitlab/gitlab-ce/packages/ubuntu/bionic/gitlab-ce_13.10.3-ce.0_amd64.deb/download.deb
-

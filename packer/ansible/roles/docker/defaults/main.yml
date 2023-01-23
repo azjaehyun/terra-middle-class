@@ -1,9 +1,0 @@
----
-docker_repo_url: "https://download.docker.com/linux"
-docker_apt_gpg_key: "{{ docker_repo_url }}/{{ os_name }}/gpg"
-
-# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-docker_apt_repository: "deb [arch=amd64] {{ docker_repo_url }}/{{ os_name }} {{ ansible_distribution_release }} stable"
-dockerce_version: "5:20.10.5~3-0~ubuntu-bionic"
-dockercecli_version: "5:20.10.5~3-0~ubuntu-bionic"
-containerdio_version: "1.4.4-1"

@@ -44,4 +44,8 @@ terraform middle class
   - terraform status 파일 s3 업로드.
   - terraform dynamodb 연동 ( back )
 
+---
 
+## todolist
+- /Users/jaehyun/workspace/bespin/terra-middle-class/terraform/arch/terraform-middle/dev/10-init-cloud9/cloud9-setting -  aws-php-web-ubuntu.pkr.hcl variable 넣기
+- 
