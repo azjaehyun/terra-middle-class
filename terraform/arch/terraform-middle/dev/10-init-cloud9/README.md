@@ -86,7 +86,7 @@ aws cloud9 create-environment-ec2 --name terraformPrac \
 명령어 실행후 정상적으로 생성되면 아래와 같은 결과값이 출력됩니다.
 ```
 {
-    "environmentId": "95595d60ef484fd1952b0d43b205d76f"
+    "environmentId": "98871339930d4955988433155faf928c"
 }
 ```
 ---

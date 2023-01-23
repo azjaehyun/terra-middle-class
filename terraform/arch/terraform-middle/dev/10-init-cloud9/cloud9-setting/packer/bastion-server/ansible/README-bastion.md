@@ -1,4 +1,4 @@
-# Packer bastion 생성
+# ansible bastion 
 
 
 ## [packer document](https://developer.hashicorp.com/packer/tutorials/aws-get-started)
