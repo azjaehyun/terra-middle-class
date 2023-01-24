@@ -1,5 +1,8 @@
 ## terraform variable.tf , data.tf , function 실습
-## 1. Variable
+
+## [Type and Values](https://developer.hashicorp.com/terraform/language/expressions/types)
+
+## 1. Variable 
 * ### 1-1. [String variable type](https://www.terraform.io/language/expressions/strings)
 * terraform console 실행
 ```

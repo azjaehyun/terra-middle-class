@@ -1,5 +1,16 @@
 ### [terraform backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
 
+### 학습 이유
+~~~
+- tfstate 파일에는 테라폼의 버전과 각 리소스에 대한 정보가 들어있습니다.
+- 여기서 tfstate 파일을 관리하기에 앞서, Terraform Backend를 이해할 필요가 있습니다.
+- Terraform Backend는 tfstate 파일을 어디에 저장하고 가져올지에 대한 설정을 의미합니다.
+- 기본적으로 로컬에 저장이 되지만, 경우에 따라 S3 등 다양한 Backend Type을 설정할 수 있습니다.
+- 여기서 단순히 S3에만 저장을 하는 것이 아니라 tfstate를 S3에 관리하면서 동시에 작업이 일어나지 않도록 DynamoDB에서 Lock 테이블을 생성해서 관리를 합니다.
+
+
+~~~
+
 ### 적용방법 - provider.tf에 backend s3 적용!
 ~~~ 
 terraform {
