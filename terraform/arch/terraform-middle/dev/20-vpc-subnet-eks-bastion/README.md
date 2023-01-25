@@ -92,5 +92,9 @@ is 1.3.7. You can update by downloading from https://www.terraform.io/downloads.
 
 부록 terraform.tfstate 업로드 // cloud9 삭제시 필요.
 ~~~
+>> cloud9서버에서 terraform.tfstate upload
 aws s3 cp  /home/ubuntu/environment/terra-middle-class/terraform/arch/terraform-middle/dev/20-vpc-subnet-eks-bastion/terraform.tfstate s3://jaehyun-terraform-tfstate/bastion-state
+
+>> s3에서 bastion server로 terraform.tfstate download
+aws s3 cp s3://jaehyun-terraform-tfstate/bastion-state /home/ubuntu/terra-middle-class/terraform/arch/terraform-middle/dev/20-vpc-subnet-eks-bastion/terraform.tfstate
 ~~~
