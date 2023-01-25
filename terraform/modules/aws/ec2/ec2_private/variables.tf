@@ -16,6 +16,11 @@ variable "public_access" {
   default = false
 }
 
+variable "ami_id" {
+  type    = string
+  default = ""
+}
+
 variable "name" {
   type    = string
   default = "myapp"
@@ -25,10 +30,6 @@ variable "key_name" {
   type = string
 }
 
-variable "ami" {
-  type = string
-  default = "ami-07efac79022b86107"
-}
 
 variable "tag_name" {
   description = "A mapping of tags to assign to the resource"

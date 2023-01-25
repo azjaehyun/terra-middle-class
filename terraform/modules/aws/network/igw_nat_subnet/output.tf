@@ -5,8 +5,7 @@ output "eip_ip" {
 output "nat_gateway_id" {
   value = aws_nat_gateway.ngw-template.id
 }
-
 output "igw_id" {
   #value = ["${aws_internet_gateway.igw-template.*.id}"]
-  value = aws_internet_gateway.igw-template.id
+  value = aws_internet_gateway.igw-template[0].id
 }

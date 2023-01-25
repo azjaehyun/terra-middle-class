@@ -1,7 +1,18 @@
-output "private_ip" {
-  value = aws_instance.instance-template.private_ip
+
+
+output "default-private_ip" {
+  value = join(", ",aws_instance.instance-template-default[*].private_ip)
 }
 
-output "ec2_id" {
-  value = aws_instance.instance-template.id
+output "default-ec2_id" {
+  value = join(", ",aws_instance.instance-template-default[*].id)
+}
+
+
+output "ami-private_ip" {
+  value = join(", ",aws_instance.instance-template-ami[*].private_ip)
+}
+
+output "ami-ec2_id" {
+  value = join(", ",aws_instance.instance-template-ami[*].id)
 }

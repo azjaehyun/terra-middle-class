@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name      = "learn-packer-linux-aws"
+  ami_name      = "learn-packer-linux-aws-test"
   instance_type = "t2.micro"
   region        = "ap-northeast-2"
   subnet_filter {
@@ -44,7 +44,9 @@ build {
       "sudo apt-get update",
       "sudo apt-get install -y php",
       "sudo apt-get install -y apache2",
-      "sudo git clone https://github.com/brikis98/php-app.git /var/www/html/app"
+      "sudo git clone https://github.com/brikis98/php-app.git /var/www/html/app",
+      "sudo echo 'Hello, World' > index.html ",
+      "sudo mv index.html  /var/www/html "
     ]
   }
 }

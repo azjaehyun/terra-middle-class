@@ -47,5 +47,5 @@ terraform middle class
 ---
 
 ## todolist
-- /Users/jaehyun/workspace/bespin/terra-middle-class/terraform/arch/terraform-middle/dev/10-init-cloud9/cloud9-setting -  aws-php-web-ubuntu.pkr.hcl variable 넣기
-- 
+- /Users/jaehyun/workspace/bespin/terra-middle-class/terraform/arch/terraform-middle/dev/10-init-cloud9/cloud9-setting - - aws-php-web-ubuntu.pkr.hcl variable 넣기
+- 20-vpc-subnet-2 lb 등록후 접속 안됨 - 해결해야함!

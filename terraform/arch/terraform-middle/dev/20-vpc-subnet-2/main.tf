@@ -4,7 +4,7 @@
 ## data source : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/key_pair
 module "aws_key_pair" {
   source = "../../../../modules/aws/keypair"
-  keypair_name   = "${var.keypair_name}"
+  keypair_name   = var.keypair_name
   tag_name = merge(local.tags, {Name = format("%s-key", local.name_prefix)})
 }
 
@@ -155,6 +155,7 @@ module "aws_ec2_bastion" {
 
 module "private-web-a" {
   source        = "../../../../modules/aws/ec2/ec2_private"
+  ami_id        = var.ami_id
   sg_groups     = [module.aws_sg_web.sg_id]
   key_name      = module.aws_key_pair.key_name
   subnet_id     = module.aws_private_subnet_web_a.subnet_id
@@ -163,6 +164,7 @@ module "private-web-a" {
 
 module "private-web-c" {
   source        = "../../../../modules/aws/ec2/ec2_private"
+  ami_id        =  var.ami_id
   sg_groups     = [module.aws_sg_web.sg_id]
   key_name      = module.aws_key_pair.key_name
   subnet_id     = module.aws_private_subnet_web_c.subnet_id
@@ -187,32 +189,19 @@ module "aws-lb-web-alb" {
     tg_tag_name = merge(local.tags, {Name = format("%s-web-tg", local.name_prefix)})
 
     #lb_attachment setting - ec2 연결 
-    nlb_listeners_ids = [ module.private-web-a.ec2_id , module.private-web-c.ec2_id ]
+    nlb_listeners_ids = [ module.private-web-a.ami-ec2_id , module.private-web-c.ami-ec2_id ]
     target_port = 80
 }
 
 
-
 resource "aws_lb_target_group_attachment" "web-alb-tg-att-web1" {
     target_group_arn = module.aws-lb-web-alb.lb-tg-arn
-    target_id = module.private-web-a.ec2_id
+    target_id = module.private-web-a.ami-ec2_id
     port = 80
 }
 
 resource "aws_lb_target_group_attachment" "web-alb-tg-att-web2" {
     target_group_arn = module.aws-lb-web-alb.lb-tg-arn
-    target_id = module.private-web-c.ec2_id
+    target_id = module.private-web-c.ami-ec2_id
     port = 80
 }
-
-
-
-#module "private-was-a" {
-#  source        = "../../../modules/aws/ec2/ec2_private"
-#  sg_groups     = [module.aws_sg_was.sg_id]
-#  key_name      = module.aws_key_pair.key_name
-#  subnet_id     = module.aws_private_subnet_was_a.subnet_id
-#  tag_name = merge(local.tags, {Name = format("%s-ec2-private-was-a", local.name_prefix)})
-#}
-
-
