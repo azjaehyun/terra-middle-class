@@ -10,33 +10,45 @@ data "aws_vpc" "this" {
   }
 }
 
-data "aws_subnet_ids" "subnets" {
-  vpc_id = data.aws_vpc.this.id
+data "aws_subnets" "subnets" {
+  
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.this.id]
+  }
   filter {
     name   = "tag:kubernetes.io/cluster/${local.cluster_name}"
     values = ["shared"]
   }
 }
 
-data "aws_subnet_ids" "public" {
-  vpc_id = data.aws_vpc.this.id
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.this.id]
+  }
   filter {
     name   = "tag:kubernetes.io/role/elb"
     values = ["1"]
   }
 }
 
-data "aws_subnet_ids" "private" {
-  vpc_id = data.aws_vpc.this.id
+data "aws_subnets" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.this.id]
+  }
   filter {
     name   = "tag:kubernetes.io/role/internal-elb"
     values = ["1"]
   }
 }
 
-data "aws_subnet_ids" "workers" {
-  vpc_id = data.aws_vpc.this.id
-
+data "aws_subnets" "workers" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.this.id]
+  }
   filter {
     name   = "tag:kubernetes.io/role/internal-elb"
     values = ["1"]
