@@ -1,0 +1,83 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: msa-maker-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - webtest.azjaehyun.shop
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - webtest.azjaehyun.shop
+    port:
+      name: https-443
+      number: 443
+      protocol: HTTP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: webtest-virtualservice
+  namespace: default
+spec:
+  gateways:
+  - webtest-gateway
+  hosts:
+  - webtest.azjaehyun.shop
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: webtest-service
+        port:
+          number: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webtest-service
+  labels:
+    name: webtest-service
+spec:
+  ports:
+    - name: server
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: webtest-app             
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webtest-app
+  name: webtest-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webtest-app
+  template:
+    metadata:
+      labels:
+        app: webtest-app
+    spec:
+      containers:
+        - image: symjaehyun/springhelloterra:1.0
+          name: webtest
+          ports:
+            - containerPort: 8080
+          #env:
+          #  - name: profile
+          #    value: "eks"
