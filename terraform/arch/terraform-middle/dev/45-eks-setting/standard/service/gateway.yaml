@@ -8,7 +8,7 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - webtest.azjaehyun.shop
+    - testweb.azjaehyun.shop
     port:
       name: http
       number: 80
@@ -16,7 +16,7 @@ spec:
     tls:
       httpsRedirect: true
   - hosts:
-    - webtest.azjaehyun.shop
+    - testweb.azjaehyun.shop
     port:
       name: https-443
       number: 443

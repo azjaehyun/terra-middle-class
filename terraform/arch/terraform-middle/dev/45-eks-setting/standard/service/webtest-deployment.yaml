@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: webtest-app
-  name: webtest-app
+    app: testweb-app
+  name: testweb-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webtest-app
+      app: testweb-app
   template:
     metadata:
       labels:
-        app: webtest-app
+        app: testweb-app
     spec:
       containers:
         - image: symjaehyun/springhelloterra:1.0
-          name: webtest
+          name: testweb
           ports:
             - containerPort: 8080
           #env:
