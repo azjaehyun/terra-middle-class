@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: testweb-app
+  name: testweb-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testweb-app
+  template:
+    metadata:
+      labels:
+        app: testweb-app
+        version: v1
+    spec:
+      containers:
+        - image: symjaehyun/springhelloterra:1.0
+          name: testweb
+          ports:
+            - containerPort: 8080
+          #env:
+          #  - name: profile
+          #    value: "eks"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: testweb-app
+  name: testweb-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testweb-app
+  template:
+    metadata:
+      labels:
+        app: testweb-app
+        version: v2
+    spec:
+      containers:
+        - image: symjaehyun/springhelloterra:1.0
+          name: testweb
+          ports:
+            - containerPort: 8080
+          #env:
+          #  - name: profile
+          #    value: "eks"

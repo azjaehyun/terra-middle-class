@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: testweb-virtualservice
+  namespace: default
+spec:
+  gateways:
+  - testweb-gateway
+  hosts:
+  - testweb.azjaehyun.shop
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: testweb-service
+        subset: v1
+        port:
+          number: 8080
+      weight: 90
+    - destination:
+        host: testweb-service
+        subset: v2
+        port:
+          number: 8080
+      weight: 10           
