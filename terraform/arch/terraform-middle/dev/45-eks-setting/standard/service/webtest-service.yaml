@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webtest-service
+  labels:
+    name: webtest-service
+spec:
+  ports:
+    - name: server
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: webtest-app

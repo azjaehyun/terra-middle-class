@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: webtest-virtualservice
+  namespace: default
+spec:
+  gateways:
+  - webtest-gateway
+  hosts:
+  - webtest.azjaehyun.shop
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: webtest-service
+        port:
+          number: 8080
