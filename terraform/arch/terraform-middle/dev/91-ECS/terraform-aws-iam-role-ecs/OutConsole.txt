@@ -1,0 +1,9 @@
+Apply complete! Resources: 14 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+ecs_autoscale_role = "arn:aws:iam::767404772322:role/ecs_autoscale_role"
+ecs_codedeploy = "arn:aws:iam::767404772322:role/ecs_codedeploy_role"
+ecs_exec = "arn:aws:iam::767404772322:role/ecsExecTaskRole"
+ecs_service = "ecsServiceRole:ecsTaskRolePolicy"
+ecs_task = "arn:aws:iam::767404772322:role/ecsTaskRole"
