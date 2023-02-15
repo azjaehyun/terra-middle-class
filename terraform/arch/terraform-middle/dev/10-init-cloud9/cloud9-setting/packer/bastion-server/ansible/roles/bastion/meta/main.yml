@@ -12,11 +12,11 @@ dependencies:
     - packer
     - terraform
     - aws-cli
-    - istioctl
     - kubectl
     - aws-iam-authenticator
     - ansible
     - helm
     - java
     - curl
+    #- istioctl
     #- halyard

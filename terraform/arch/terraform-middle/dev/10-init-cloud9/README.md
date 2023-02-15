@@ -106,3 +106,15 @@ list-tags-for-resource                   | tag-resource
 untag-resource                           | update-environment
 update-environment-membership            | help
 ```
+
+### cloud 9 env setting
+심볼릭 링크 설정
+```
+ubuntu:~/environment $ ln -s /home/ubuntu/environment/terra-middle-class/terraform/arch/terraform-middle/dev arch
+ubuntu:~/environment $ ln -s /home/ubuntu/environment/terra-middle-class/terraform/modules/aws modules
+```
+심볼링 링크 확인
+```
+ubuntu:~/environment $ ls
+README.md  arch  modules  terra-middle-class
+```
