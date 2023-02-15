@@ -4,6 +4,9 @@
 ```
 aws configure // 본인의 AWS_ACCESS_KEY , AWS_SECRET_ACCESS_KEY 넣기.
 aws configure list
+// profile 설정
+aws configure set region ap-northeast-2 --profile terraformjh
+aws s3 ls --profile "terraformjh"
 // 위에 환경설정 경로는 해당경로에 있습니다 참고! cd ~/.aws/credentials
 ```
 * ### 환경변수로 default profile을 등록하여 준다.
