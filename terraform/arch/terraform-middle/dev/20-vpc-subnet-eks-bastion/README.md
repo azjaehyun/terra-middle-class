@@ -20,7 +20,7 @@ sudo su // root 권한으로 설치
 # apt-add-repository ppa:ansible/ansible
 # apt-get update
 # apt-get install ansible
-# ansible --verison
+# ansible --version
 // version 체크
 ansible 2.9.27
   config file = /etc/ansible/ansible.cfg

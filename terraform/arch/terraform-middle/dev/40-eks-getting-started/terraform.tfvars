@@ -4,7 +4,7 @@ context = {
     aws_region              = "ap-northeast-2"
     region_alias            = "an2"
 
-    project                 = "terraformPrac"
+    project                 = "terra-middle-class-test"
     environment             = "prd"
     env_alias               = "p"
     owner                   = "jaehyun.yang@bespinglobal.com"
@@ -16,5 +16,5 @@ context = {
 }
 
 # vpc prefix ip
-vpc_cidr = "20.20"
-keypair_name = "terraformTest-key"
+vpc_cidr = "40.40"
+keypair_name = "middleClass-key"

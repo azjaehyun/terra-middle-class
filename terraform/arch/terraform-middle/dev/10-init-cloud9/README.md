@@ -112,9 +112,10 @@ update-environment-membership            | help
 ```
 ubuntu:~/environment $ ln -s /home/ubuntu/environment/terra-middle-class/terraform/arch/terraform-middle/dev arch
 ubuntu:~/environment $ ln -s /home/ubuntu/environment/terra-middle-class/terraform/modules/aws modules
+ubuntu:~/environment $ ln -s /home/ubuntu/environment/arch/10-init-cloud9/cloud9-setting/packer/bastion-server/ansible ansible
 ```
 심볼링 링크 확인
 ```
 ubuntu:~/environment $ ls
-README.md  arch  modules  terra-middle-class
+README.md  arch  modules  terra-middle-class ansible
 ```
