@@ -1,18 +1,3 @@
-provider "aws" {
-  region = local.region
-}
-
-locals {
-  region = "eu-west-1"
-  name   = "ecs-ex-${replace(basename(path.cwd), "_", "-")}"
-
-  tags = {
-    Name       = local.name
-    Example    = local.name
-    Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
-}
-
 ################################################################################
 # Ecs Module
 ################################################################################
@@ -20,7 +5,7 @@ locals {
 module "ecs" {
   source = "../.."
 
-  cluster_name = local.name
+  cluster_name = local.cluster_name
 
   cluster_configuration = {
     execute_command_configuration = {
@@ -63,7 +48,7 @@ module "ecs_disabled" {
 ################################################################################
 
 resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws/ecs/${local.name}"
+  name              = "/aws/ecs/${local.name_prefix}"
   retention_in_days = 7
 
   tags = local.tags
