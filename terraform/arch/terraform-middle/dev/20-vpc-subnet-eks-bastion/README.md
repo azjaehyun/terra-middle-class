@@ -15,12 +15,12 @@
 따라서 cloud9 환경에서 Ansible을 사용하기 위해 cloud9 환경에 ansible을 설치합니다.
 ```
 sudo su // root 권한으로 설치
-# apt-get update
-# apt-get install apt-transport-https wget gnupg
-# apt-add-repository ppa:ansible/ansible
-# apt-get update
-# apt-get install ansible
-# ansible --version
+apt-get update
+apt-get install apt-transport-https wget gnupg
+apt-add-repository ppa:ansible/ansible
+apt-get update
+apt-get install ansible
+ansible --version
 // version 체크
 ansible 2.9.27
   config file = /etc/ansible/ansible.cfg
