@@ -53,3 +53,12 @@ resource "aws_cloudwatch_log_group" "this" {
 
   tags = local.tags
 }
+
+resource "aws_ecr_repository" "this" {
+  name                 = "ecrnginxtest"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
