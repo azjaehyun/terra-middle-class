@@ -55,7 +55,7 @@ resource "aws_cloudwatch_log_group" "this" {
 }
 
 resource "aws_ecr_repository" "this" {
-  name                 = "ecrnginxtest"
+  name                 = "nginxtesting"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
