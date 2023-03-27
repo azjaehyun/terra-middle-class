@@ -20,7 +20,7 @@ terraform plan
 ```
 * 특정 리소스만 apply
 ```
-terraform apply -arget={resourceName}
+terraform apply -target={resourceName}
 ex) terraform plan -target=module.aws_key_pair
 ```
 
