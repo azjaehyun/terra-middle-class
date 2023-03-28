@@ -16,6 +16,6 @@ context = {
 }
 
 # vpc prefix ip
-vpc_cidr = "30.30"
+vpc_cidr = "50.50"
 keypair_name = "terraPracVpcSubnet2"
-ami_id = "ami-0d9635b7c218dbdc6"
+ami_id = "ami-077baccda61881b65"

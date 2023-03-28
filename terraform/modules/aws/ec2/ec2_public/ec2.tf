@@ -1,5 +1,5 @@
 resource "aws_instance" "instance-template" {
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = coalesce(var.ami_id , data.aws_ami.ubuntu.id)
   instance_type          = var.instance_type
   vpc_security_group_ids = var.sg_groups
   subnet_id              = var.subnet_id

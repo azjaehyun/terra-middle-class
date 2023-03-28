@@ -26,12 +26,14 @@ module "aws_vpc_network" {
   source    = "../../../../modules/aws/network/igw_nat_subnet"
   internet_gateway_enabled = true
   vpc_id    = module.aws_vpc.vpc_id
-  subnet_id = module.aws_public_subnet_a.subnet_id
+  subnet_id = module.aws_public_subnet_web_a.subnet_id
   tag_name = merge(local.tags, {Name = format("%s-igw-nat-sunet", local.name_prefix)})
 }
 
+
+
 #
-module "aws_public_subnet_a" { 
+module "aws_public_subnet_web_a" { 
   source     = "../../../../modules/aws/subnet"
   cidr_block = "${var.vpc_cidr}.11.0/24"
   vpc_id     = module.aws_vpc.vpc_id
@@ -42,7 +44,7 @@ module "aws_public_subnet_a" {
 
 
 # public subnet setting - [ availability_zone_c ] - 예비 
-module "aws_public_subnet_c" {
+module "aws_public_subnet_web_c" {
   source     = "../../../../modules/aws/subnet"
   cidr_block = "${var.vpc_cidr}.12.0/24"
   vpc_id     = module.aws_vpc.vpc_id
@@ -86,13 +88,13 @@ resource "aws_route_table" "public-route" {
 
 # resource : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association
 resource "aws_route_table_association" "to-public-a" {
-  subnet_id      = module.aws_public_subnet_a.subnet_id
+  subnet_id      = module.aws_public_subnet_web_a.subnet_id
   route_table_id = aws_route_table.public-route.id
 }
 
 
 resource "aws_route_table_association" "to-public-c" {
-  subnet_id      = module.aws_public_subnet_c.subnet_id
+  subnet_id      = module.aws_public_subnet_web_c.subnet_id
   route_table_id = aws_route_table.public-route.id
 }
 
@@ -144,17 +146,8 @@ module "aws_sg_was" {
 }
 
 
-module "aws_ec2_bastion" {
+module "public-web-a" {
   source        = "../../../../modules/aws/ec2/ec2_public"
-  sg_groups     = [module.aws_sg_default.sg_id]
-  key_name      = module.aws_key_pair.key_name
-  public_access = true
-  subnet_id     = module.aws_public_subnet_a.subnet_id
-  tag_name = merge(local.tags, {Name = format("%s-ec2-public-bastion-a", local.name_prefix)})
-}
-
-module "private-web-a" {
-  source        = "../../../../modules/aws/ec2/ec2_private"
   ami_id        = var.ami_id
   sg_groups     = [module.aws_sg_web.sg_id]
   key_name      = module.aws_key_pair.key_name
@@ -162,8 +155,8 @@ module "private-web-a" {
   tag_name = merge(local.tags, {Name = format("%s-ec2-private-web-a", local.name_prefix)})
 }
 
-module "private-web-c" {
-  source        = "../../../../modules/aws/ec2/ec2_private"
+module "public-web-c" {
+  source        = "../../../../modules/aws/ec2/ec2_public"
   ami_id        =  var.ami_id
   sg_groups     = [module.aws_sg_web.sg_id]
   key_name      = module.aws_key_pair.key_name
@@ -179,7 +172,7 @@ module "aws-lb-web-alb" {
     lb_internal           = false
     lb_type = "application"
     security_groups    = [module.aws_sg_web.sg_id]
-    subnets            = [module.aws_private_subnet_web_a.subnet_id, module.aws_private_subnet_web_c.subnet_id]
+    subnets            = [module.aws_public_subnet_web_a.subnet_id, module.aws_public_subnet_web_c.subnet_id]
     tag_name = merge(local.tags, {Name = format("%s-web-alb", local.name_prefix)})
     
     #target group setting
@@ -189,19 +182,20 @@ module "aws-lb-web-alb" {
     tg_tag_name = merge(local.tags, {Name = format("%s-web-tg", local.name_prefix)})
 
     #lb_attachment setting - ec2 연결 
-    nlb_listeners_ids = [ module.private-web-a.ami-ec2_id , module.private-web-c.ami-ec2_id ]
+    nlb_listeners_ids = [ module.public-web-a.ami-ec2_id , module.public-web-c.ami-ec2_id ]
     target_port = 80
+    depends_on = [module.public-web-a,module.public-web-c]
 }
 
 
 resource "aws_lb_target_group_attachment" "web-alb-tg-att-web1" {
     target_group_arn = module.aws-lb-web-alb.lb-tg-arn
-    target_id = module.private-web-a.ami-ec2_id
+    target_id = module.public-web-a.ami-ec2_id
     port = 80
 }
 
 resource "aws_lb_target_group_attachment" "web-alb-tg-att-web2" {
     target_group_arn = module.aws-lb-web-alb.lb-tg-arn
-    target_id = module.private-web-c.ami-ec2_id
+    target_id = module.public-web-c.ami-ec2_id
     port = 80
 }

@@ -28,6 +28,11 @@ variable "keypair_name" {
   type        = string
 }
 
+variable "ami_id" {
+  description = "ami_id"
+  type        = string
+}
+
 
 
 locals {

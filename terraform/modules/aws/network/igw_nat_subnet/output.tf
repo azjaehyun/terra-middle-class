@@ -7,5 +7,5 @@ output "nat_gateway_id" {
 }
 output "igw_id" {
   #value = ["${aws_internet_gateway.igw-template.*.id}"]
-  value = aws_internet_gateway.igw-template[0].id
+  value = aws_internet_gateway.igw-template.id
 }

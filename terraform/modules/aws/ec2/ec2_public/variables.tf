@@ -25,9 +25,9 @@ variable "key_name" {
   type = string
 }
 
-variable "ami" {
+variable "ami_id" {
   type = string
-  default = "ami-07efac79022b86107"
+  #default = "ami-07efac79022b86107"
 }
 
 

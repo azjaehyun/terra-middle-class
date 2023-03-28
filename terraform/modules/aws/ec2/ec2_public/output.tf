@@ -9,3 +9,7 @@ output "private_ip" {
 output "ec2_id" {
   value = aws_instance.instance-template.id
 }
+
+output "ami-ec2_id" {
+  value = join(", ",aws_instance.instance-template[*].id)
+}

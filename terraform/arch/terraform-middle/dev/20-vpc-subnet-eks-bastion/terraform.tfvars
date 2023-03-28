@@ -4,7 +4,7 @@ context = {
     aws_region              = "ap-northeast-2"
     region_alias            = "an2"
 
-    project                 = "terra-middle-class-test"
+    project                 = "bastion-test"
     environment             = "prd"
     env_alias               = "p"
     owner                   = "jaehyun.yang@bespinglobal.com"
@@ -16,5 +16,5 @@ context = {
 }
 
 # vpc prefix ip
-vpc_cidr = "40.40"
-keypair_name = "middleClass-key"
+vpc_cidr = "30.30"
+keypair_name = "bastion-key"
