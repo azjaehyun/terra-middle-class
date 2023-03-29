@@ -54,3 +54,9 @@ horizontalpodautoscaler.autoscaling/istio-egressgateway    Deployment/istio-egre
 horizontalpodautoscaler.autoscaling/istio-ingressgateway   Deployment/istio-ingressgateway   <unknown>/80%   2         5         1          23s
 horizontalpodautoscaler.autoscaling/istiod                 Deployment/istiod                 <unknown>/80%   2         5         1          28s
 ~~~
+
+
+## istio uninstall
+```
+istioctl uninstall -y --purge
+```
