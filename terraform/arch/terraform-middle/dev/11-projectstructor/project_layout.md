@@ -6,7 +6,7 @@ terraform 폴더 아키텍처
 .
 ├── project_layout
 │   ├── aws
-│   │   └── terraform-project
+│   │   └── terraform-project // 20 vpc , 30 rds , 40 eks , 50 service
 │   │       ├── dev // 각 환경별로 분리 
 │   │       │   └── services
 │   │       │       └── backend-app

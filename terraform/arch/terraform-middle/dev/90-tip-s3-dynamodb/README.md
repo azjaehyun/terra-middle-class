@@ -63,3 +63,9 @@ again. For most commands, you can disable locking with the "-lock=false"
 flag, but this is not recommended.
 
 ~~~
+
+##lock 제거
+```
+ps aux | grep terraform
+kill -9 {process id}
+```

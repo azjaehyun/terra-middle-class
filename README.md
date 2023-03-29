@@ -46,3 +46,28 @@ terraform middle class
 
 ---
 
+
+## terraform.tfvars - variable date common 적용 tip
+
+```
+locals {
+  name_prefix   = format("%s-%s%s", var.context.project, var.context.region_alias, var.context.env_alias)
+  tags = {
+    Project     = var.context.project
+    Environment = var.context.environment
+    Team        = var.context.team
+    Owner       = var.context.owner
+  }
+  current_time = "${formatdate("YYYYMMDD", timestamp())}" # 기존 local 에 이 친구만 추가
+}
+
+main.tf에서 사용방법
+module "aws_ec2_bastion" {
+  source        = "../../../../modules/aws/ec2/ec2_bastion"
+  sg_groups     = [module.aws_sg_default.sg_id]
+  key_name      = module.aws_key_pair.key_name
+  public_access = true
+  subnet_id     = module.aws_public_subnet_a.subnet_id
+  tag_name = merge(local.tags, {Name = format("%s-ec2-public-bastion-a", local.name_prefix)}, {Date = local.current_time})
+} # DATE Tag 추가
+```
