@@ -27,7 +27,7 @@ module "aws_vpc_network" {
   internet_gateway_enabled = true
   vpc_id    = module.aws_vpc.vpc_id
   subnet_id = module.aws_public_subnet_a.subnet_id
-  tag_name = merge(local.tags, {Name = format("%s-igw-nat-sunet", local.name_prefix)})
+  tag_name = merge(local.tags, {Name = format("%s-igw-nat-subnet", local.name_prefix)})
 }
 
 #
