@@ -47,6 +47,10 @@ resource "aws_eks_node_group" "node" {
   subnet_ids      = tolist(data.aws_subnets.private.ids)
   instance_types = ["m5.large"]
   disk_size = 50
+  
+  remote_access {
+    ec2_ssh_key = var.keypair_name
+  }
 
   scaling_config {
     desired_size = var.eks_min_size
